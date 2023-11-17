@@ -21,14 +21,14 @@ body {
   background: rgb(var(--background-end-rgb));
 }
 
+#app {
+  width: 70%;
+  margin: 0 auto;
+}
+
 /* change order list */
 #test {
   color: red;
-}
-
-#list {
-  width: 70%;
-  margin: 0 auto;
 }
 
 .changeOrder {

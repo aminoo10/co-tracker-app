@@ -2,7 +2,7 @@ import ChangeOrderList from "./components/ChangeOrderList"
 
 export default function Home() {
   return (
-    <div>
+    <div id='app'>
       <ChangeOrderList/>
     </div>
   )
