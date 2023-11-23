@@ -37,6 +37,15 @@ body {
   justify-content: space-between;
 }
 
+/* modal */
+
+.active {
+  background-color: black;
+}
+
+#modal {
+  width: 500px;
+}
 
 
 
