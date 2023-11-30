@@ -39,14 +39,12 @@ body {
 
 /* modal */
 
-.active {
-  background-color: black;
-}
-
 #modal {
-  width: 500px;
+  background: rgba(0,0,0,.7);
 }
 
-
+#modal svg {
+  background: red;
+}
 
 
