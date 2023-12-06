@@ -3,7 +3,14 @@ import React, {useState, useEffect} from 'react';
 export default function ChangeOrderModal() {
 
 const [modalOpen, setModalOpen] = useState(false);
+const [checked, setCheckState] = useState(false);
 // const [formData, setFormData] = useState<>
+
+const labelStyle = 'block text-gray-700 text-sm font-bold mb-7';
+const inputStyle = 'mt-2 shadow appearance-none border rounded ml-2 py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline';
+
+const environmentOptions = ['PROD', 'PAT'];
+const riskOptions = ['Low', 'Moderate', 'High', 'Very High'];
 
 const openModal = () => {
   if (!modalOpen) setModalOpen(true);
@@ -15,6 +22,11 @@ const closeModal = () => {
 
 const handleSubmit = (e:React.FormEvent) => {
   e.preventDefault();
+}
+
+const handleCheckbox = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const checked = e.target;
+  setCheckState(!checked);
 }
 
 useEffect(() => {
@@ -29,6 +41,8 @@ useEffect(() => {
   };
   
 }, [])
+
+
 
 
 
@@ -63,24 +77,86 @@ useEffect(() => {
               <div className="p-4 md:p-5">
                 <form className="space-y-4" action="#">
                   <div>
-                    <label className='block text-gray-700 text-sm font-bold mb-7'>
-                      Username: 
-                      <input className='mt-2 shadow appearance-none border rounded ml-2 py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline'
+
+                    <label className={labelStyle}>
+                      Environment: 
+                      <select
+                        className={inputStyle}
+                        name="risk"
+                      >
+                        <option value="" disabled>
+                          Choose an option
+                        </option>
+                        {environmentOptions.map((option) => (
+                          <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                      </select>
+                    </label>
+
+
+                    <label className={labelStyle}>
+                      Risk: 
+                      <select
+                        className={inputStyle}
+                        name="risk"
+                      >
+                        <option value="" disabled>
+                          Choose an option
+                        </option>
+                        {riskOptions.map((option) => (
+                          <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                      </select>
+                    </label>
+
+                    <label className={labelStyle}>
+                      Description: 
+                      <input
+                        className={inputStyle}
                         type='text'
-                        name="username"
-                        placeholder='Username'
+                        name="description"
+                        placeholder='Description'
                       />
                     </label>
 
-                    <label className='block text-gray-700 text-sm font-bold mb-2'>
-                      Password: 
+
+                    <label className={labelStyle}>
+                      Start Time: 
                       <input
-                        className='mt-2 shadow appearance-none border border-red-500 rounded ml-2 py-2 px-3 text-gray-700 mb-3 focus:outline-none focus:shadow-outline'
-                        type='password'
-                        name="password"
-                        placeholder='********'
+                        className={inputStyle}
+                        type='datetime-local'
+                        name="start"
+                        placeholder='Start time'
                       />
                     </label>
+
+                    <label className={labelStyle}>
+                      End Time: 
+                      <input
+                        className={inputStyle}
+                        type='datetime-local'
+                        name="end"
+                        placeholder='End time'
+                      />
+                    </label>
+
+                    <label className={labelStyle}>
+                      MES?: 
+                      <input
+                        className={inputStyle}
+                        type='checkbox'
+                        name="mes"
+                        checked= {checked}
+                        onChange={handleCheckbox}
+                      />
+                    </label>
+
+
+
                   </div>
                 </form>
               </div>
