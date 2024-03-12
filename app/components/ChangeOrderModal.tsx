@@ -7,7 +7,7 @@ export default function ChangeOrderModal() {
   const [modalOpen, setModalOpen] = useState(false);
 
   const labelStyle = 'block text-gray-700 text-sm font-bold mb-5 flex-col justify-between';
-  const inputStyle = 'mt-2 shadow appearance-none border rounded ml-2 py-2 px-2 text-gray-700 focus:outline-none focus:shadow-outline';
+  const inputStyle = 'mt-2 shadow appearance-none border rounded ml-2 py-2 px-2 text-gray-700 focus:outline-none focus:shadow-outline font-normal';
   const modalStyle = `opacity-0 -translate-y-full scale-150 transform relative fixed w-11/12 md:max-w-md mx-auto
   rounded h-100 overflow-y-auto shadow-lg transition-opacity bg-white transition-transform 
   duration-300`;
@@ -28,11 +28,11 @@ export default function ChangeOrderModal() {
   }
 
   const closeModal = () => {
-    modal.current?.classList.add('-translate-y-full');
+    modal.current?.classList.add('-translate-y-500');
     setTimeout(() => {
       modal.current?.classList.add('opacity-0');
       modal.current?.classList.add('scale-150');
-    }, 100);
+    }, 1000);
     setTimeout(() => {if (modalOpen) setModalOpen(false)}, 300);
   }
 
@@ -75,7 +75,72 @@ export default function ChangeOrderModal() {
 
           {/* body */}
           <div className="w-full p-3">
-            Test1234
+
+            <label htmlFor="env" className={labelStyle}>Environment
+              <select name="env" id="env" className={inputStyle}>
+                <option value="" disabled>Choose an option</option>
+                {environmentOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label htmlFor="risk" className={labelStyle}>Risk
+              <select name="risk" id="risk" className={inputStyle}>
+                <option value="" disabled>Choose an option</option>
+                {riskOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            
+
+            <label htmlFor="malcode" className={labelStyle}>MAL Code
+              <input type="text" name="malcode" placeholder='Project MAL code' className={inputStyle}/>
+            </label>
+
+            <label htmlFor="descript" className={labelStyle}>Description
+              <input type="text" name="descript" placeholder="What is this change?" 
+              className={inputStyle}/>
+            </label>
+
+            <label className={labelStyle}>
+              Start Time: 
+              <input
+                className={inputStyle}
+                type='datetime-local'
+                name="start"
+                placeholder='Start time'
+              />
+            </label>
+
+            <label className={labelStyle}>
+              End Time: 
+              <input
+                className={inputStyle}
+                type='datetime-local'
+                name="end"
+                placeholder='End time'
+              />
+            </label>
+
+            <label htmlFor="mes-check" className={labelStyle}>MES?
+              <input type="checkbox" 
+                     name='mes-check'
+                     className="w-4 h-4 mt-2 ml-2 text-blue-600 bg-gray-100 border-gray-300 
+                     rounded focus:ring-blue-500 dark:focus:ring-blue-600 
+                     dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 
+                     dark:border-gray-600"/>
+            </label>
+
+
+         
+
           </div>
 
           {/* footer */}
