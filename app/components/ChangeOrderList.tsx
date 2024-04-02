@@ -1,44 +1,20 @@
+import {ChangeOrder} from '../ChangeOrder';
 import React from 'react'
 
-type Environment = "PROD" | "PAT";
-type Risk = "Low" | "Moderate" | "High" | "Very High";
+ interface COListProps {
+  COList: ChangeOrder[];
+ }
 
-interface ChangeOrder {
-  malcode: string;
-  environment: Environment;
-  risk : Risk;
-  description: string;
-  mesProvided: boolean;
-  start: Date;
-  end: Date;
-  chg: string;
-  notes: string;
-}
+export default function ChangeOrderList({COList}: COListProps) {
 
-const changeOrders : ChangeOrder[] = [];
+  const test: Number = 1;
 
-const testInstance: ChangeOrder = {
-  malcode: '',
-  environment: 'PROD',
-  risk: 'High',
-  description: 'Stupid fucking bullshit',
-  mesProvided: true,
-  start: new Date(2023, 10, 7, 0, 0),
-  end: new Date(2023, 10, 7, 7, 0),
-  chg: 'CHG1276486',
-  notes: "blah blah blah who fucking cares!!!!"
-}
-
-changeOrders.push(testInstance);
-
-
-export default function ChangeOrderList() {
+  console.log(typeof test);
 
   return (
       <div id="list">
-
         <h2 id="test">Change Orders:</h2>
-        {changeOrders.map(changeOrder => {
+        {COList.map(changeOrder => {
           return (<div className="changeOrder">
           <p>{changeOrder.malcode}</p>
           <p>{changeOrder.environment}</p>
