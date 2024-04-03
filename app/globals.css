@@ -31,10 +31,4 @@ body {
   color: red;
 }
 
-.changeOrder {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
 

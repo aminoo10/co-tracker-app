@@ -5,17 +5,16 @@ import React from 'react'
   COList: ChangeOrder[];
  }
 
+ const changeOrderStyle = `changeOrder flex flex-row justify-evenly`;
+
+
 export default function ChangeOrderList({COList}: COListProps) {
-
-  const test: Number = 1;
-
-  console.log(typeof test);
 
   return (
       <div id="list">
         <h2 id="test">Change Orders:</h2>
         {COList.map(changeOrder => {
-          return (<div className="changeOrder">
+          return (<div className={changeOrderStyle}>
           <p>{changeOrder.malcode}</p>
           <p>{changeOrder.environment}</p>
           <p>{changeOrder.risk}</p>
@@ -29,5 +28,5 @@ export default function ChangeOrderList({COList}: COListProps) {
         )})}
 
       </div>
-  )
-}
+  );
+};

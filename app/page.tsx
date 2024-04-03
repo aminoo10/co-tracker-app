@@ -5,10 +5,8 @@ import {ChangeOrder} from './ChangeOrder';
 import React, {useState} from 'react';
 
 
-const changeOrders : ChangeOrder[] = [];
-
 const testInstance: ChangeOrder = {
-  malcode: '',
+  malcode: 'FUCK',
   environment: 'PROD',
   risk: 'High',
   description: 'Stupid fucking bullshit',
@@ -16,16 +14,18 @@ const testInstance: ChangeOrder = {
   start: new Date(2023, 10, 7, 0, 0),
   end: new Date(2023, 10, 7, 7, 0),
   chg: 'CHG1276486',
-  notes: "blah blah blah who fucking cares!!!!"
+  notes: ""
 }
-
-changeOrders.push(testInstance);
 
 
 export default function Home() {
 
+  const [changeOrders, setChangeOrders] = useState<ChangeOrder[]>([testInstance]);
+
+
   const handleSaveFormData = (formData: any) => {
-    changeOrders.push(formData);
+    //changeOrders.push(formData);
+    setChangeOrders(prevArray => [...prevArray, formData]);
   };
 
 
