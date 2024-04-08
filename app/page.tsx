@@ -28,6 +28,16 @@ export default function Home() {
     setChangeOrders(prevArray => [...prevArray, formData]);
   };
 
+  //delete will pass through the CHG (which is a unique identifier) of the object that is to be deleted, 
+  //it will then use filter to basically create a new array from the filtered current array, which then overwrites
+  //the current array.
+  const handleDeleteFormData = (CHG: string) => {
+    let newArray = changeOrders.filter(obj => {
+      return obj.chg !== CHG;
+    })
+    setChangeOrders(newArray);
+  }
+
 
   return (
     <div id='app'>
