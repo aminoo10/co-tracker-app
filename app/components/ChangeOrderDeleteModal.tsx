@@ -4,9 +4,10 @@ import React, {useState, useEffect, useRef} from 'react';
 interface ChangeOrderDeleteModalProps {
     modalOpen: boolean;
     onConfirm: (decision: boolean) => void
+    deleteChg: string;
    }
   
-export default function ChangeOrderDeleteModal({modalOpen, onConfirm}: ChangeOrderDeleteModalProps) {
+export default function ChangeOrderDeleteModal({modalOpen, onConfirm, deleteChg}: ChangeOrderDeleteModalProps) {
 
   const deleteModal = useRef<HTMLDivElement>(null);
   const [modalState, setModalState] = useState(modalOpen);
@@ -34,7 +35,6 @@ export default function ChangeOrderDeleteModal({modalOpen, onConfirm}: ChangeOrd
     }, 100);
     setTimeout(() => {if (modalOpen) {
     setModalState(false);
-        
     } }, 300);
   }
 
@@ -43,6 +43,7 @@ export default function ChangeOrderDeleteModal({modalOpen, onConfirm}: ChangeOrd
     const deleteResult = innerHTML === 'Yes' ? true : false;
     console.log(deleteResult);
     onConfirm(deleteResult);
+    closeModal();
 };
 
 
@@ -50,7 +51,6 @@ export default function ChangeOrderDeleteModal({modalOpen, onConfirm}: ChangeOrd
   useEffect(() => {
     setModalState(modalOpen);
     if (modalOpen) openModal();
-    else closeModal();
   }, [modalOpen]);
 
 
@@ -66,8 +66,9 @@ export default function ChangeOrderDeleteModal({modalOpen, onConfirm}: ChangeOrd
           {/* modal */}
         <div ref={deleteModal} className={modalStyle}>
 
-            <h2 className='px-4 py-3 border-gray-200 text-xl font-semibold text-gray-600'>Are you sure you want to delete this change order?</h2>
-            
+            <h2 className='px-4 py-3 border-gray-200 text-xl font-semibold text-gray-600 text-center'>Are you sure you want to 
+            <span className='text-red-500'> delete</span><span className='font-bold'> {deleteChg}</span>?</h2>
+
             <div className="mx-3 my-3 flex justify-around">
             <button
                 className=" focus:outline-none bg-green-500 p-3 w-1/3 rounded-lg text-white hover:bg-green-400"

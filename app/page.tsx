@@ -36,13 +36,14 @@ export default function Home() {
       return obj.chg !== CHG;
     })
     setChangeOrders(newArray);
+    console.log(newArray);
   }
 
 
   return (
     <div id='app'>
       <ChangeOrderModal onSave={handleSaveFormData} />
-      <ChangeOrderList COList={changeOrders}/>
+      <ChangeOrderList COList={changeOrders} onDelete={handleDeleteFormData}/>
     </div>
   )
 }

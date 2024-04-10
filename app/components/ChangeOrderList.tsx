@@ -4,29 +4,34 @@ import React, {useState} from 'react'
 
  interface COListProps {
   COList: ChangeOrder[];
+  onDelete: (chg: string) => void;
  }
 
  const changeOrderStyle = `changeOrder flex flex-row items-center justify-evenly mb-5`;
 
 
-export default function ChangeOrderList({COList}: COListProps) {
+export default function ChangeOrderList({COList, onDelete}: COListProps) {
 
   const [deleteModalState, setDeleteModalState] = useState(false);
+  const [chgToDelete, setChgToDelete] = useState<string>('');
 
-  const openDeleteModal = () => {
+  const openDeleteModal = (e: React.MouseEvent<HTMLButtonElement,  MouseEvent>) => {
+    const chg = e.currentTarget.parentElement?.previousElementSibling?.previousElementSibling?.innerHTML || ''; //uhh maybe figure out better way to do this, but it works!
+    setChgToDelete(chg);
     setDeleteModalState(true);
   }
 
   const confirmDelete = (deleteDecision: boolean) => {
-   // if (deleteDecision)  //invoke delete item thing;
+    if (deleteDecision && chgToDelete) onDelete(chgToDelete);
     setDeleteModalState(false);
+    setChgToDelete('');
   }
 
   
 
   return (
       <div id="list">
-        <ChangeOrderDeleteModal modalOpen={deleteModalState} onConfirm={confirmDelete}/>
+        <ChangeOrderDeleteModal modalOpen={deleteModalState} onConfirm={confirmDelete} deleteChg={chgToDelete}/>
         <h2 id="test">Change Orders:</h2>
         {COList.map(changeOrder => {
           return (<div className={changeOrderStyle}>
@@ -37,7 +42,7 @@ export default function ChangeOrderList({COList}: COListProps) {
           <p>{(changeOrder.mesProvided) ? "True" : "False"}</p>
           <p>{changeOrder.start.toLocaleString()}</p>
           <p>{changeOrder.end.toLocaleString()}</p>
-          <p>{changeOrder.chg}</p>
+          <p className='chg'>{changeOrder.chg}</p>
           <p>{changeOrder.notes}</p>
           <div className='button-list flex flex-col'>
             <button
