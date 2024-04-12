@@ -33,7 +33,7 @@ export default function ChangeOrderDeleteModal({modalOpen, onConfirm, deleteChg}
       deleteModal.current?.classList.add('opacity-0');
       deleteModal.current?.classList.add('scale-150');
     }, 100);
-    setTimeout(() => {if (modalOpen) {
+    setTimeout(() => {if (modalState) {
     setModalState(false);
     } }, 300);
   }
@@ -51,6 +51,7 @@ export default function ChangeOrderDeleteModal({modalOpen, onConfirm, deleteChg}
   useEffect(() => {
     setModalState(modalOpen);
     if (modalOpen) openModal();
+    else closeModal();
   }, [modalOpen]);
 
 
