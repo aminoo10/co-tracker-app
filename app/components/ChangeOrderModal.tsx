@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {ChangeOrder} from '../ChangeOrder';
+import {MODAL_STYLE, OVERLAY_STYLE, LABEL_STYLE, INPUT_STYLE, ENVIRONMENT_OPTIONS, RISK_OPTIONS} from '../constants';
 
 export default function ChangeOrderModal({onSave} : {onSave: (coData: ChangeOrder) => void}) {
 
@@ -37,7 +38,6 @@ export default function ChangeOrderModal({onSave} : {onSave: (coData: ChangeOrde
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLInputElement>) => {
     const { name, value, type} = e.target;
     let newValue : string | boolean | Date = value;
-    //const isChecked = type === 'checkbox' ? (e.target as HTMLInputElement).checked : !(e.target as HTMLInputElement).checked;
 
     if (type === 'checkbox') {
       newValue = (e.target as HTMLInputElement).checked;
@@ -66,18 +66,8 @@ export default function ChangeOrderModal({onSave} : {onSave: (coData: ChangeOrde
     });
     closeModal();
   }
-
-  const labelStyle = 'block text-gray-700 text-sm font-bold mb-5 flex-col justify-between';
-  const inputStyle = 'mt-2 shadow appearance-none border rounded ml-2 py-2 px-2 text-gray-700 focus:outline-none focus:shadow-outline focus:ring-2 font-normal';
-  const modalStyle = `opacity-0 -translate-y-full scale-150 transform relative fixed w-11/12 md:max-w-md mx-auto
-  rounded h-100 overflow-y-auto shadow-lg transition-opacity bg-white transition-transform 
-  duration-300`;
-
-  const overlayStyle = `${modalOpen ? '' : 'hidden'} absolute inset-0 bg-black bg-opacity-40
-  h-screen w-full flex justify-center items-start md:items-center pt-10 md:pt-0`;
-
-  const environmentOptions = ['PROD', 'PAT'];
-  const riskOptions = ['Low', 'Moderate', 'High', 'Very High'];
+  // const ENVIRONMENT_OPTIONS = ['PROD', 'PAT'];
+  // const RISK_OPTIONS = ['Low', 'Moderate', 'High', 'Very High'];
 
   const openModal = () => {
     if (!modalOpen) setModalOpen(true);
@@ -112,10 +102,10 @@ export default function ChangeOrderModal({onSave} : {onSave: (coData: ChangeOrde
       
       {/* overlay */}
 
-      <div id="modal_overlay" className={overlayStyle}>
+      <div id="modal_overlay" className={`${modalOpen ? '' : 'hidden'} ${OVERLAY_STYLE}`}>
 
           {/* modal */}
-        <div ref={modal} className={modalStyle}>
+        <div ref={modal} className={MODAL_STYLE}>
 
           {/* header */}
           <div className='px-4 py-3 border-b border-gray-200 flex justify-between items-center'>
@@ -134,11 +124,11 @@ export default function ChangeOrderModal({onSave} : {onSave: (coData: ChangeOrde
           {/* body */}
           <div className="w-full p-3">
 
-            <label htmlFor="environment" className={labelStyle}>Environment
-              <select name="environment" id="environment" className={inputStyle} 
+            <label htmlFor="environment" className={LABEL_STYLE}>Environment
+              <select name="environment" id="environment" className={INPUT_STYLE} 
               onChange={handleChange}>
                 <option value="" disabled>Choose an option</option>
-                {environmentOptions.map((option) => (
+                {ENVIRONMENT_OPTIONS.map((option) => (
                   <option key={option} value={option}>
                     {option}
                   </option>
@@ -148,11 +138,11 @@ export default function ChangeOrderModal({onSave} : {onSave: (coData: ChangeOrde
 
 
 
-            <label htmlFor="risk" className={labelStyle}>Risk
-              <select name="risk" id="risk" className={inputStyle}
+            <label htmlFor="risk" className={LABEL_STYLE}>Risk
+              <select name="risk" id="risk" className={INPUT_STYLE}
               onChange={handleChange}>
                 <option value="" disabled>Choose an option</option>
-                {riskOptions.map((option) => (
+                {RISK_OPTIONS.map((option) => (
                   <option key={option} value={option}>
                     {option}
                   </option>
@@ -162,28 +152,28 @@ export default function ChangeOrderModal({onSave} : {onSave: (coData: ChangeOrde
 
             
 
-            <label htmlFor="malcode" className={labelStyle}>MAL Code
+            <label htmlFor="malcode" className={LABEL_STYLE}>MAL Code
               <input type="text" value={coData.malcode}
               name="malcode" placeholder='Project MAL code' 
-              className={inputStyle}
+              className={INPUT_STYLE}
               onChange={handleChange}/>
             </label>
 
 
 
-            <label htmlFor="description" className={labelStyle}>Description
+            <label htmlFor="description" className={LABEL_STYLE}>Description
               <input type="text" name="description" placeholder="What is this change?" 
-              className={inputStyle}
+              className={INPUT_STYLE}
               onChange={handleChange}/>
             </label>
 
 
 
-            <label className={labelStyle}>
+            <label className={LABEL_STYLE}>
               Start Time: 
               <input
                 defaultValue={formattedDateString}
-                className={inputStyle}
+                className={INPUT_STYLE}
                 onChange={handleChange}
                 type='datetime-local'
                 name="start"
@@ -193,11 +183,11 @@ export default function ChangeOrderModal({onSave} : {onSave: (coData: ChangeOrde
 
 
 
-            <label className={labelStyle}>
+            <label className={LABEL_STYLE}>
               End Time: 
               <input
                 defaultValue={formattedDateString}
-                className={inputStyle}
+                className={INPUT_STYLE}
                 onChange={handleChange}
                 type='datetime-local'
                 name="end"
@@ -207,16 +197,16 @@ export default function ChangeOrderModal({onSave} : {onSave: (coData: ChangeOrde
 
 
 
-            <label htmlFor="chg" className={labelStyle}>Change Order Number
+            <label htmlFor="chg" className={LABEL_STYLE}>Change Order Number
               <input type="text" name="chg" placeholder="What is the CO#?"
               value={coData.chg}
-              className={inputStyle}
+              className={INPUT_STYLE}
               onChange={handleChange}/>
             </label>
 
 
 
-            <label htmlFor="mesProvided" className={labelStyle} >MES?
+            <label htmlFor="mesProvided" className={LABEL_STYLE} >MES?
               <input type="checkbox" 
                      name='mesProvided'  
                      onChange={handleChange}

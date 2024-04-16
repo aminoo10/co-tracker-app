@@ -1,4 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
+import {ENVIRONMENT_OPTIONS, INPUT_STYLE, LABEL_STYLE, MODAL_STYLE, OVERLAY_STYLE, RISK_OPTIONS} from '../constants';
+
 
 
 interface ChangeOrderEditModalProps {
@@ -10,13 +12,6 @@ export default function ChangeOrderDeleteModal({modalOpen, close}: ChangeOrderEd
 
   const editModal = useRef<HTMLDivElement>(null);
   const [modalState, setModalState] = useState(modalOpen);
-
-  const modalStyle = `-translate-y-full scale-150 opacity-0 transform relative fixed w-11/12 md:max-w-md mx-auto
-  rounded h-100 overflow-y-auto shadow-lg transition-opacity bg-white transition-transform 
-  duration-300`;
-
-  const overlayStyle = `${modalOpen ? '' : 'hidden'} absolute inset-0 bg-black bg-opacity-40
-  h-screen w-full flex justify-center items-start md:items-center pt-10 md:pt-0`;
 
   const openModal = () => {
     setTimeout(() => {
@@ -48,29 +43,138 @@ export default function ChangeOrderDeleteModal({modalOpen, close}: ChangeOrderEd
 
   return (
     <div>
-      {/* https://tailwindcomponents.com/component/animation-modal*/}
+  {/* https://tailwindcomponents.com/component/animation-modal*/}
+  
+  {/* overlay */}
+
+  <div id="modal_overlay" className={`${modalOpen ? '' : 'hidden'} ${OVERLAY_STYLE}`}>
+
+      {/* modal */}
+    <div ref={editModal} className={MODAL_STYLE}>
+
+      {/* header */}
+      <div className='px-4 py-3 border-b border-gray-200 flex justify-between items-center'>
+        <h2 className='text-xl font-semibold text-gray-600'>New Change Order Entry</h2>
+
+        <div onClick={closeModal} className="modal-close cursor-pointer bg-red-500 hover:bg-red-700">
+              <svg className="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                viewBox="0 0 18 18">
+                <path
+                  d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z">
+                </path>
+              </svg>
+      </div>
+      </div>
+
+      {/* body */}
+      <div className="w-full p-3">
+
+        <label htmlFor="environment" className={LABEL_STYLE}>Environment
+          <select name="environment" id="environment" className={INPUT_STYLE}>
+            <option value="" disabled>Choose an option</option>
+            {ENVIRONMENT_OPTIONS.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </label>
+
+
+
+        <label htmlFor="risk" className={LABEL_STYLE}>Risk
+          <select name="risk" id="risk" className={INPUT_STYLE}>
+            <option value="" disabled>Choose an option</option>
+            {RISK_OPTIONS.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        
+
+        <label htmlFor="malcode" className={LABEL_STYLE}>MAL Code
+          <input type="text"
+          name="malcode" placeholder='Project MAL code' 
+          className={INPUT_STYLE}/>
+        </label>
+
+
+
+        <label htmlFor="description" className={LABEL_STYLE}>Description
+          <input type="text" name="description" placeholder="What is this change?" 
+          className={INPUT_STYLE}/>
+        </label>
+
+
+
+        <label className={LABEL_STYLE}>
+          Start Time: 
+          <input
+            
+            className={INPUT_STYLE}
+            type='datetime-local'
+            name="start"
+            placeholder='Start time'
+          />
+        </label>
+
+
+
+        <label className={LABEL_STYLE}>
+          End Time: 
+          <input
+            
+            className={INPUT_STYLE}
+            type='datetime-local'
+            name="end"
+            placeholder='End time'
+          />
+        </label>
+
+
+
+        <label htmlFor="chg" className={LABEL_STYLE}>Change Order Number
+          <input type="text" name="chg" placeholder="What is the CO#?"
+          
+          className={INPUT_STYLE}/>
+        </label>
+
+
+
+        <label htmlFor="mesProvided" className={LABEL_STYLE} >MES?
+          <input type="checkbox" 
+                 name='mesProvided'  
+                 className="w-4 h-4 mt-2 ml-2 text-blue-600 bg-gray-100 border-gray-300 
+                 rounded focus:ring-blue-500 focus:ring-2"/>
+        </label>
+
+
+        <label htmlFor="notes" className={LABEL_STYLE}>Notes</label>
+        <textarea 
+          name="notes" placeholder='Write any notes or comments for this change here...' rows={4}
+          className='block p-2.5 shadow appearance-none border rounded-lg w-full text-gray-700 focus:outline-none focus:shadow-outline focus:ring-2 font-normal resize'/>
+
+
+      </div>
+
+      {/* footer */}
       
-      {/* overlay */}
-
-      <div id="modal_edit_overlay" className={overlayStyle}>
-
-          {/* modal */}
-        <div ref={editModal} className={modalStyle}>
-
-            <h2 className='px-4 py-3 border-gray-200 text-xl font-semibold text-gray-600 text-center'>edit</h2>
-
-            <div className="mx-3 my-3 flex justify-around">
+      <div className="px-4 py-3 border-t border-gray-200 flex justify-around">
             <button
                 className=" focus:outline-none bg-green-500 p-3 w-1/3 rounded-lg text-white hover:bg-green-400"
                 onClick={closeModal}>Confirm</button>
             <button
                 className=" focus:outline-none modal-close bg-red-500 w-1/3 p-3 rounded-lg text-white hover:bg-red-700"
                 onClick={closeModal}>Cancel</button>
-            </div>
-
-        </div>
       </div>
-
     </div>
+  </div>
+
+</div>
+
   )
 }
+

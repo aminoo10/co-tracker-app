@@ -1,4 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
+import {MODAL_STYLE, OVERLAY_STYLE} from '../constants';
+
 
 
 interface ChangeOrderDeleteModalProps {
@@ -12,12 +14,6 @@ export default function ChangeOrderDeleteModal({modalOpen, onConfirm, deleteChg}
   const deleteModal = useRef<HTMLDivElement>(null);
   const [modalState, setModalState] = useState(modalOpen);
 
-  const modalStyle = `-translate-y-full scale-150 opacity-0 transform relative fixed w-11/12 md:max-w-md mx-auto
-  rounded h-100 overflow-y-auto shadow-lg transition-opacity bg-white transition-transform 
-  duration-300`;
-
-  const overlayStyle = `${modalState ? '' : 'hidden'} absolute inset-0 bg-black bg-opacity-40
-  h-screen w-full flex justify-center items-start md:items-center pt-10 md:pt-0`;
 
   const openModal = () => {
     setTimeout(() => {
@@ -62,10 +58,10 @@ export default function ChangeOrderDeleteModal({modalOpen, onConfirm, deleteChg}
       
       {/* overlay */}
 
-      <div id="modal_confirm_delete" className={overlayStyle}>
+      <div id="modal_confirm_delete" className={`${modalOpen ? '' : 'hidden'} ${OVERLAY_STYLE}`}>
 
           {/* modal */}
-        <div ref={deleteModal} className={modalStyle}>
+        <div ref={deleteModal} className={MODAL_STYLE}>
 
             <h2 className='px-4 py-3 border-gray-200 text-xl font-semibold text-gray-600 text-center'>Are you sure you want to 
             <span className='text-red-500'> delete</span><span className='font-bold'> {deleteChg}</span>?</h2>
