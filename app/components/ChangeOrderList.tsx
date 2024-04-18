@@ -11,26 +11,28 @@ import React, {useState} from 'react'
 
  const changeOrderStyle = `changeOrder flex flex-row items-center justify-evenly mb-5`;
 
-
 export default function ChangeOrderList({COList, onDelete}: COListProps) {
 
   const [deleteModalState, setDeleteModalState] = useState(false);
   const [editModalState, setEditModalState] = useState(false);
-  const [chgToDelete, setChgToDelete] = useState<string>('');
+  const [selectedChg, setSelectedChg] = useState<string>('');
 
   const openDeleteModal = (e: React.MouseEvent<HTMLButtonElement,  MouseEvent>) => {
-    const chg = e.currentTarget.parentElement?.previousElementSibling?.previousElementSibling?.innerHTML || ''; //uhh maybe figure out better way to do this, but it works!
-    setChgToDelete(chg);
+    //uhh maybe figure out better way to do this, but it works!
+    const chg = e.currentTarget.parentElement?.previousElementSibling?.previousElementSibling?.innerHTML || ''; 
+    setSelectedChg(chg);
     setDeleteModalState(true);
   }
 
   const confirmDelete = (deleteDecision: boolean) => {
-    if (deleteDecision && chgToDelete) onDelete(chgToDelete);
+    if (deleteDecision && selectedChg) onDelete(selectedChg);
     setDeleteModalState(false);
-    setChgToDelete('');
+    setSelectedChg('');
   }
 
   const openEditModal = (e: React.MouseEvent<HTMLButtonElement,  MouseEvent>) => {
+    const chg = e.currentTarget.parentElement?.previousElementSibling?.previousElementSibling?.innerHTML || ''; 
+    setSelectedChg(chg);
     setEditModalState(true);
   }
 
@@ -41,10 +43,11 @@ export default function ChangeOrderList({COList, onDelete}: COListProps) {
 
   return (
       <div id="list">
-        <ChangeOrderDeleteModal modalOpen={deleteModalState} onConfirm={confirmDelete} deleteChg={chgToDelete}/>
+        <ChangeOrderDeleteModal modalOpen={deleteModalState} onConfirm={confirmDelete} deleteChg={selectedChg}/>
         <ChangeOrderEditModal modalOpen={editModalState} close={closeEditModal}/>
         <h2 id="test">Change Orders:</h2>
         {COList.map(changeOrder => {
+
           return (<div className={changeOrderStyle}>
           <p >{changeOrder.malcode}</p>
           <p>{changeOrder.environment}</p>
