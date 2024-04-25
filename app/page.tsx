@@ -23,7 +23,7 @@ export default function Home() {
   const [changeOrders, setChangeOrders] = useState<ChangeOrder[]>([testInstance]);
 
 
-  const handleSaveFormData = (formData: any) => {
+  const handleSaveFormData = (formData: ChangeOrder) => {
     //changeOrders.push(formData);
     setChangeOrders(prevArray => [...prevArray, formData]);
   };
@@ -39,11 +39,30 @@ export default function Home() {
     console.log(newArray);
   }
 
+  const getCHGObject = (CHG: string): ChangeOrder => {
+    const found = changeOrders.find((CO: ChangeOrder) => CO.chg === CHG);
+    if (!found) {
+      throw new Error(`No ChangeOrder found with CHG: ${CHG}`)
+    } 
+    return found;
+    
+  }
+
+  const handleEditFormData = (CHG: string, formData: ChangeOrder) => {
+    let newArray = changeOrders.filter(obj => {
+      
+    })
+  }
+
 
   return (
     <div id='app'>
       <ChangeOrderModal onSave={handleSaveFormData} />
-      <ChangeOrderList COList={changeOrders} onDelete={handleDeleteFormData}/>
+      <ChangeOrderList 
+      COList={changeOrders} 
+      onDelete={handleDeleteFormData} 
+      getCHGObject={getCHGObject}
+      />
     </div>
   )
 }

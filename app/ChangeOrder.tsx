@@ -4,7 +4,7 @@ export interface ChangeOrder {
         environment: "PROD" | "PAT";
         risk : "Low" | "Moderate" | "High" | "Very High";
         description: string;
-        mesProvided: true | false;
+        mesProvided: boolean;
         start: Date;
         end: Date;
         chg: string;

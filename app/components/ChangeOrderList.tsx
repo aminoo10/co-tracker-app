@@ -1,21 +1,22 @@
 import {ChangeOrder} from '../ChangeOrder';
 import ChangeOrderDeleteModal from "./ChangeOrderDeleteModal"
 import ChangeOrderEditModal from "./ChangeOrderEditModal"
-
 import React, {useState} from 'react'
 
  interface COListProps {
   COList: ChangeOrder[];
   onDelete: (chg: string) => void;
+  getCHGObject: (CHG: string) => ChangeOrder;
  }
 
  const changeOrderStyle = `changeOrder flex flex-row items-center justify-evenly mb-5`;
 
-export default function ChangeOrderList({COList, onDelete}: COListProps) {
+export default function ChangeOrderList({COList, onDelete, getCHGObject}: COListProps) {
 
   const [deleteModalState, setDeleteModalState] = useState(false);
   const [editModalState, setEditModalState] = useState(false);
   const [selectedChg, setSelectedChg] = useState<string>('');
+  const [chgToEdit, setChgToEdit] = useState<ChangeOrder | undefined>();
 
   const openDeleteModal = (e: React.MouseEvent<HTMLButtonElement,  MouseEvent>) => {
     //uhh maybe figure out better way to do this, but it works!
@@ -32,19 +33,20 @@ export default function ChangeOrderList({COList, onDelete}: COListProps) {
 
   const openEditModal = (e: React.MouseEvent<HTMLButtonElement,  MouseEvent>) => {
     const chg = e.currentTarget.parentElement?.previousElementSibling?.previousElementSibling?.innerHTML || ''; 
-    setSelectedChg(chg);
+    setChgToEdit(getCHGObject(chg));
     setEditModalState(true);
   }
 
   const closeEditModal = () => {
     setEditModalState(false);
+    
   }
 
 
   return (
       <div id="list">
         <ChangeOrderDeleteModal modalOpen={deleteModalState} onConfirm={confirmDelete} deleteChg={selectedChg}/>
-        <ChangeOrderEditModal modalOpen={editModalState} close={closeEditModal}/>
+        <ChangeOrderEditModal modalOpen={editModalState} close={closeEditModal} editChg={chgToEdit}/>
         <h2 id="test">Change Orders:</h2>
         {COList.map(changeOrder => {
 

@@ -1,4 +1,5 @@
 import { RefObject } from "react";
+import { ChangeOrder } from "./ChangeOrder";
 
 export const MODAL_STYLE = `opacity-0 -translate-y-full scale-150 transform relative fixed w-11/12 md:max-w-md mx-auto rounded h-100 overflow-y-auto shadow-lg transition-opacity bg-white transition-transform duration-300`
 
@@ -11,6 +12,7 @@ export const INPUT_STYLE = 'mt-2 shadow appearance-none border rounded ml-2 py-2
 export const ENVIRONMENT_OPTIONS = ['PROD', 'PAT'];
 
 export const RISK_OPTIONS = ['Low', 'Moderate', 'High', 'Very High'];
+
 
 export const OPEN_MODAL = (modal : RefObject<HTMLDivElement>) => {
 setTimeout(() => {
@@ -30,6 +32,8 @@ export function CLOSE_MODAL(modal: RefObject<HTMLDivElement>, state: boolean, mo
     setTimeout(() => {if (state) { modalSet(false)}}, 300);
 
 }
+
+   
 
 // export function CLOSE_MODAL(modal: RefObject<HTMLDivElement>, state: boolean, close: () => void) {
 //         modal.current?.classList.add('-translate-y-full');

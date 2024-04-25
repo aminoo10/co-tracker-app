@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { ChangeOrder } from "../ChangeOrder";
 import {
   ENVIRONMENT_OPTIONS,
   INPUT_STYLE,
@@ -13,24 +14,59 @@ import {
 interface ChangeOrderEditModalProps {
   modalOpen: boolean;
   close: () => void;
+  editChg: ChangeOrder | undefined;
 }
 
 export default function ChangeOrderDeleteModal({
   modalOpen,
+  editChg,
   close,
 }: ChangeOrderEditModalProps) {
   const editModal = useRef<HTMLDivElement>(null);
+
+  
   const [modalState, setModalState] = useState(modalOpen);
+  const [coData, setCoData] = useState<ChangeOrder | undefined>({
+    malcode: editChg?.malcode as string,
+    environment: editChg?.environment as "PROD" | "PAT",
+    risk: editChg?.risk as "Low" | "Moderate" | "High" | "Very High",
+    description: editChg?.description as string,
+    mesProvided: editChg?.mesProvided as boolean,
+    start: editChg?.start as Date,
+    end: editChg?.end as Date,
+    chg: editChg?.chg as string,
+    notes: editChg?.notes as string,
+  });
+
 
   const closeModal = () => {
     CLOSE_MODAL(editModal, modalState, close); //this is kinda fucked up to do it like this.... but whatever :P
   };
 
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value, type } = e.target;
+    let newValue: string | boolean | Date = value;
+
+    if (type === "checkbox") newValue = (e.target as HTMLInputElement).checked;
+    else if (type === "datetime-local") newValue = new Date(value);
+    else if (type === "textarea") newValue = value;
+
+    setCoData((prevCoData) => ({
+      ...(prevCoData as ChangeOrder),
+      [name]: newValue,
+    }));
+  };
+
+
   useEffect(() => {
     setModalState(modalOpen);
     if (modalOpen) OPEN_MODAL(editModal);
     else close();
-  }, [modalOpen]);
+  }, [modalOpen, coData]);
 
   return (
     <div>
@@ -47,7 +83,7 @@ export default function ChangeOrderDeleteModal({
           {/* header */}
           <div className="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
             <h2 className="text-xl font-semibold text-gray-600">
-              New Change Order Entry
+              Edit Change Order Entry
             </h2>
 
             <div
@@ -74,6 +110,8 @@ export default function ChangeOrderDeleteModal({
                 name="environment"
                 id="environment"
                 className={INPUT_STYLE}
+                defaultValue={coData?.environment}
+                onChange={handleChange}
               >
                 <option value="" disabled>
                   Choose an option
@@ -88,7 +126,13 @@ export default function ChangeOrderDeleteModal({
 
             <label htmlFor="risk" className={LABEL_STYLE}>
               Risk
-              <select name="risk" id="risk" className={INPUT_STYLE}>
+              <select 
+                name="risk" 
+                id="risk" 
+                className={INPUT_STYLE} 
+                defaultValue={coData?.risk}
+                onChange={handleChange}
+              >
                 <option value="" disabled>
                   Choose an option
                 </option>
@@ -107,6 +151,8 @@ export default function ChangeOrderDeleteModal({
                 name="malcode"
                 placeholder="Project MAL code"
                 className={INPUT_STYLE}
+                defaultValue={coData?.malcode}
+                onChange={handleChange}
               />
             </label>
 
@@ -117,6 +163,9 @@ export default function ChangeOrderDeleteModal({
                 name="description"
                 placeholder="What is this change?"
                 className={INPUT_STYLE}
+                defaultValue={coData?.description}
+                onChange={handleChange}
+
               />
             </label>
 
@@ -127,6 +176,9 @@ export default function ChangeOrderDeleteModal({
                 type="datetime-local"
                 name="start"
                 placeholder="Start time"
+                // defaultValue={coData?.start} //make method that converts date into string.
+                onChange={handleChange}
+
               />
             </label>
 
@@ -137,6 +189,9 @@ export default function ChangeOrderDeleteModal({
                 type="datetime-local"
                 name="end"
                 placeholder="End time"
+                // defaultValue={coData?.end}
+                onChange={handleChange}
+
               />
             </label>
 
@@ -147,6 +202,9 @@ export default function ChangeOrderDeleteModal({
                 name="chg"
                 placeholder="What is the CO#?"
                 className={INPUT_STYLE}
+                defaultValue={coData?.chg}
+                onChange={handleChange}
+
               />
             </label>
 
@@ -157,6 +215,9 @@ export default function ChangeOrderDeleteModal({
                 name="mesProvided"
                 className="w-4 h-4 mt-2 ml-2 text-blue-600 bg-gray-100 border-gray-300 
                  rounded focus:ring-blue-500 focus:ring-2"
+                 defaultChecked={coData?.mesProvided}
+                 onChange={handleChange}
+ 
               />
             </label>
 
@@ -168,6 +229,9 @@ export default function ChangeOrderDeleteModal({
               placeholder="Write any notes or comments for this change here..."
               rows={4}
               className="block p-2.5 shadow appearance-none border rounded-lg w-full text-gray-700 focus:outline-none focus:shadow-outline focus:ring-2 font-normal resize"
+              defaultValue={coData?.notes}
+              onChange={handleChange}
+
             />
           </div>
 
