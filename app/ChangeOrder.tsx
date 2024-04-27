@@ -9,7 +9,6 @@ export interface ChangeOrder {
         end: Date;
         chg: string;
         notes: string;
-      
 }
 
 /*

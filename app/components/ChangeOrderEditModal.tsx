@@ -17,7 +17,7 @@ interface ChangeOrderEditModalProps {
   editChg: ChangeOrder | undefined;
 }
 
-export default function ChangeOrderDeleteModal({
+export default function ChangeOrderEditModal({
   modalOpen,
   editChg,
   close,
@@ -28,7 +28,7 @@ export default function ChangeOrderDeleteModal({
   const [modalState, setModalState] = useState(modalOpen);
   const [coData, setCoData] = useState<ChangeOrder | undefined>({
     malcode: editChg?.malcode as string,
-    environment: editChg?.environment as "PROD" | "PAT",
+    environment: editChg?.environment as 'PROD' | 'PAT',
     risk: editChg?.risk as "Low" | "Moderate" | "High" | "Very High",
     description: editChg?.description as string,
     mesProvided: editChg?.mesProvided as boolean,
@@ -40,8 +40,25 @@ export default function ChangeOrderDeleteModal({
 
 
   const closeModal = () => {
+    setCoData(undefined);
     CLOSE_MODAL(editModal, modalState, close); //this is kinda fucked up to do it like this.... but whatever :P
   };
+
+
+
+  useEffect(() => {
+    setModalState(modalOpen);
+    if (modalOpen) OPEN_MODAL(editModal);
+    else close();
+
+    if (editChg) {
+      setCoData(editChg);
+      console.log(editChg);
+    } 
+    const selectElement = document.getElementById('risk') as HTMLSelectElement
+    console.log(selectElement.value);
+}, [modalOpen, editChg]);
+
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -62,12 +79,6 @@ export default function ChangeOrderDeleteModal({
   };
 
 
-  useEffect(() => {
-    setModalState(modalOpen);
-    if (modalOpen) OPEN_MODAL(editModal);
-    else close();
-  }, [modalOpen, coData]);
-
   return (
     <div>
       {/* https://tailwindcomponents.com/component/animation-modal*/}
@@ -81,25 +92,10 @@ export default function ChangeOrderDeleteModal({
         {/* modal */}
         <div ref={editModal} className={MODAL_STYLE}>
           {/* header */}
-          <div className="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
+          <div className="px-4 py-3 border-b border-gray-200">
             <h2 className="text-xl font-semibold text-gray-600">
               Edit Change Order Entry
             </h2>
-
-            <div
-              onClick={closeModal}
-              className="modal-close cursor-pointer bg-red-500 hover:bg-red-700"
-            >
-              <svg
-                className="fill-current text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 18 18"
-              >
-                <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
-              </svg>
-            </div>
           </div>
 
           {/* body */}
@@ -110,7 +106,7 @@ export default function ChangeOrderDeleteModal({
                 name="environment"
                 id="environment"
                 className={INPUT_STYLE}
-                defaultValue={coData?.environment}
+                value={coData?.environment || ""} //i dont know why...
                 onChange={handleChange}
               >
                 <option value="" disabled>
@@ -130,7 +126,7 @@ export default function ChangeOrderDeleteModal({
                 name="risk" 
                 id="risk" 
                 className={INPUT_STYLE} 
-                defaultValue={coData?.risk}
+                value={coData?.risk || ""} //IT FUCKING WORKS!!!!!?!!!
                 onChange={handleChange}
               >
                 <option value="" disabled>

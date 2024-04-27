@@ -7,14 +7,14 @@ import React, {useState} from 'react';
 
 const testInstance: ChangeOrder = {
   malcode: 'FUCK',
-  environment: 'PROD',
+  environment: 'PAT',
   risk: 'High',
   description: 'Stupid fucking bullshit',
   mesProvided: true,
   start: new Date(2023, 10, 7, 0, 0),
   end: new Date(2023, 10, 7, 7, 0),
   chg: 'CHG1276486',
-  notes: ""
+  notes: 'these are my fucking notes!!!!'
 }
 
 
