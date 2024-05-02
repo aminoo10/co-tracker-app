@@ -9,6 +9,7 @@ import {
   RISK_OPTIONS,
   OPEN_MODAL,
   CLOSE_MODAL,
+  DATE_TO_FORMATTED_STRING,
 } from "../constants";
 
 interface ChangeOrderEditModalProps {
@@ -172,7 +173,7 @@ export default function ChangeOrderEditModal({
                 type="datetime-local"
                 name="start"
                 placeholder="Start time"
-                // defaultValue={coData?.start} //make method that converts date into string.
+                defaultValue={DATE_TO_FORMATTED_STRING(coData?.start || new Date())} //make method that converts date into string.
                 onChange={handleChange}
 
               />
@@ -185,7 +186,7 @@ export default function ChangeOrderEditModal({
                 type="datetime-local"
                 name="end"
                 placeholder="End time"
-                // defaultValue={coData?.end}
+                defaultValue={DATE_TO_FORMATTED_STRING(coData?.end || new Date())}
                 onChange={handleChange}
 
               />

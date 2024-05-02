@@ -33,6 +33,32 @@ export function CLOSE_MODAL(modal: RefObject<HTMLDivElement>, state: boolean, mo
 
 }
 
+export const FORMATTED_DATE = () => {
+    const today = new Date();
+
+    const year = today.getFullYear();
+    const month = today.getMonth();
+    const date = today.getDate();
+    const hour = today.getHours();
+    const minute = today.getMinutes();
+    return new Date(year, month, date, hour, minute);
+}
+
+export const DATE_TO_FORMATTED_STRING = (date : Date) => {
+
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+
+    return `${year.toString().padStart(4, "0")}-${(month + 1)
+        .toString()
+        .padStart(2, "0")}-${day.toString().padStart(2, "0")}T${hour
+        .toString()
+        .padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
+}
+
    
 
 // export function CLOSE_MODAL(modal: RefObject<HTMLDivElement>, state: boolean, close: () => void) {
