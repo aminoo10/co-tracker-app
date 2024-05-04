@@ -48,10 +48,15 @@ export default function Home() {
     
   }
 
-  const handleEditFormData = (CHG: string, formData: ChangeOrder) => {
-    let newArray = changeOrders.filter(obj => {
-      
-    })
+  const handleEditFormData = (formData: ChangeOrder) => {
+    setChangeOrders(prevArray => {
+      return prevArray.map(co => {
+        if (co.chg === formData.chg) {
+          co = formData;
+        }
+        return co;
+      });
+    });
   }
 
 
@@ -61,6 +66,7 @@ export default function Home() {
       <ChangeOrderList 
       COList={changeOrders} 
       onDelete={handleDeleteFormData} 
+      onEdit={handleEditFormData}
       getCHGObject={getCHGObject}
       />
     </div>

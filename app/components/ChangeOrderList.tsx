@@ -6,12 +6,13 @@ import React, {useState} from 'react'
  interface COListProps {
   COList: ChangeOrder[];
   onDelete: (chg: string) => void;
+  onEdit: (formData : ChangeOrder) => void;
   getCHGObject: (CHG: string) => ChangeOrder;
  }
 
  const changeOrderStyle = `changeOrder flex flex-row items-center justify-evenly mb-5`;
 
-export default function ChangeOrderList({COList, onDelete, getCHGObject}: COListProps) {
+export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit}: COListProps) {
 
   const [deleteModalState, setDeleteModalState] = useState(false);
   const [editModalState, setEditModalState] = useState(false);
@@ -38,15 +39,15 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject}: COList
   }
 
   const closeEditModal = () => {
+    setChgToEdit(undefined);
     setEditModalState(false);
-    
   }
 
 
   return (
       <div id="list">
         <ChangeOrderDeleteModal modalOpen={deleteModalState} onConfirm={confirmDelete} deleteChg={selectedChg}/>
-        <ChangeOrderEditModal modalOpen={editModalState} close={closeEditModal} editChg={chgToEdit}/>
+        <ChangeOrderEditModal modalOpen={editModalState} close={closeEditModal} editChg={chgToEdit} onEdit={onEdit}/>
         <h2 id="test">Change Orders:</h2>
         {COList.map(changeOrder => {
 

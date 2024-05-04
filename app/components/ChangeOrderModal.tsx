@@ -53,7 +53,7 @@ export default function ChangeOrderModal({
 
   const handleChange = (
     e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLInputElement
+      HTMLInputElement | HTMLSelectElement
     >
   ) => {
     const { name, value, type } = e.target;

@@ -15,6 +15,7 @@ import {
 interface ChangeOrderEditModalProps {
   modalOpen: boolean;
   close: () => void;
+  onEdit: (coData : ChangeOrder) => void;
   editChg: ChangeOrder | undefined;
 }
 
@@ -22,6 +23,7 @@ export default function ChangeOrderEditModal({
   modalOpen,
   editChg,
   close,
+  onEdit,
 }: ChangeOrderEditModalProps) {
   const editModal = useRef<HTMLDivElement>(null);
 
@@ -52,24 +54,25 @@ export default function ChangeOrderEditModal({
     if (modalOpen) OPEN_MODAL(editModal);
     else close();
 
-    if (editChg) {
-      setCoData(editChg);
-      console.log(editChg);
-    } 
-    const selectElement = document.getElementById('risk') as HTMLSelectElement
-    console.log(selectElement.value);
+    if (editChg) setCoData(editChg);
+    
+    // const checkboxElement = document.getElementById('mesProvided') as HTMLSelectElement
+    // console.log(checkboxElement.value);
 }, [modalOpen, editChg]);
 
 
   const handleChange = (
     e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ) => {
     const { name, value, type } = e.target;
     let newValue: string | boolean | Date = value;
 
-    if (type === "checkbox") newValue = (e.target as HTMLInputElement).checked;
+    if (type === "checkbox") {
+      newValue = (e.target as HTMLInputElement).checked;
+      console.log(newValue);
+    } 
     else if (type === "datetime-local") newValue = new Date(value);
     else if (type === "textarea") newValue = value;
 
@@ -79,6 +82,10 @@ export default function ChangeOrderEditModal({
     }));
   };
 
+  const handleEdit = () => {
+    if (coData) onEdit(coData);
+    closeModal();
+  };
 
   return (
     <div>
@@ -199,6 +206,7 @@ export default function ChangeOrderEditModal({
                 name="chg"
                 placeholder="What is the CO#?"
                 className={INPUT_STYLE}
+                disabled
                 defaultValue={coData?.chg}
                 onChange={handleChange}
 
@@ -210,9 +218,10 @@ export default function ChangeOrderEditModal({
               <input
                 type="checkbox"
                 name="mesProvided"
+                id="mesProvided"
                 className="w-4 h-4 mt-2 ml-2 text-blue-600 bg-gray-100 border-gray-300 
                  rounded focus:ring-blue-500 focus:ring-2"
-                 defaultChecked={coData?.mesProvided}
+                 checked={coData?.mesProvided}
                  onChange={handleChange}
  
               />
@@ -237,7 +246,7 @@ export default function ChangeOrderEditModal({
           <div className="px-4 py-3 border-t border-gray-200 flex justify-around">
             <button
               className=" focus:outline-none bg-green-500 p-3 w-1/3 rounded-lg text-white hover:bg-green-400"
-              onClick={closeModal}
+              onClick={handleEdit}
             >
               Confirm
             </button>
