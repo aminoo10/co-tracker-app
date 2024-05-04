@@ -155,7 +155,7 @@ export default function ChangeOrderEditModal({
                 name="malcode"
                 placeholder="Project MAL code"
                 className={INPUT_STYLE}
-                defaultValue={coData?.malcode}
+                value={coData?.malcode}
                 onChange={handleChange}
               />
             </label>
@@ -167,7 +167,7 @@ export default function ChangeOrderEditModal({
                 name="description"
                 placeholder="What is this change?"
                 className={INPUT_STYLE}
-                defaultValue={coData?.description}
+                value={coData?.description}
                 onChange={handleChange}
 
               />
@@ -180,7 +180,7 @@ export default function ChangeOrderEditModal({
                 type="datetime-local"
                 name="start"
                 placeholder="Start time"
-                defaultValue={DATE_TO_FORMATTED_STRING(coData?.start || new Date())} //make method that converts date into string.
+                value={DATE_TO_FORMATTED_STRING(coData?.start || new Date())} //make method that converts date into string.
                 onChange={handleChange}
 
               />
@@ -193,7 +193,7 @@ export default function ChangeOrderEditModal({
                 type="datetime-local"
                 name="end"
                 placeholder="End time"
-                defaultValue={DATE_TO_FORMATTED_STRING(coData?.end || new Date())}
+                value={DATE_TO_FORMATTED_STRING(coData?.end || new Date())}
                 onChange={handleChange}
 
               />
@@ -235,7 +235,7 @@ export default function ChangeOrderEditModal({
               placeholder="Write any notes or comments for this change here..."
               rows={4}
               className="block p-2.5 shadow appearance-none border rounded-lg w-full text-gray-700 focus:outline-none focus:shadow-outline focus:ring-2 font-normal resize"
-              defaultValue={coData?.notes}
+              value={coData?.notes || ''}
               onChange={handleChange}
 
             />
