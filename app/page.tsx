@@ -3,6 +3,9 @@ import ChangeOrderList from "./components/ChangeOrderList"
 import ChangeOrderModal from "./components/ChangeOrderModal"
 import {ChangeOrder} from './ChangeOrder';
 import React, {useState} from 'react';
+import './globals.css'
+
+
 
 
 const testInstance: ChangeOrder = {

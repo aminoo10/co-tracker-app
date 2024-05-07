@@ -9,6 +9,8 @@ import {
   RISK_OPTIONS,
   OPEN_MODAL,
   CLOSE_MODAL,
+  FORMATTED_DATE,
+  DATE_TO_FORMATTED_STRING
 } from "../constants";
 
 export default function ChangeOrderModal({
@@ -19,25 +21,7 @@ export default function ChangeOrderModal({
   const modal = useRef<HTMLDivElement>(null);
 
   const [modalOpen, setModalOpen] = useState(false);
-
-  //. get today's date
-
-  const today = new Date();
-
-  const year = today.getFullYear();
-  const month = today.getMonth();
-  const date = today.getDate();
-  const hour = today.getHours();
-  const minute = today.getMinutes();
-
-  const formattedDate = new Date(year, month, date, hour, minute);
-  const formattedDateString = `${year.toString().padStart(4, "0")}-${(month + 1)
-    .toString()
-    .padStart(2, "0")}-${date.toString().padStart(2, "0")}T${hour
-    .toString()
-    .padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
-
-  //
+  const [submissionSuccess, setSubmissionSuccess] = useState(true);
 
   const [coData, setCoData] = useState<ChangeOrder>({
     malcode: "",
@@ -45,8 +29,8 @@ export default function ChangeOrderModal({
     risk: "Low",
     description: "",
     mesProvided: false,
-    start: formattedDate,
-    end: formattedDate,
+    start: FORMATTED_DATE(),
+    end: FORMATTED_DATE(),
     chg: "",
     notes: "",
   });
@@ -72,6 +56,12 @@ export default function ChangeOrderModal({
   };
 
   const handleSave = () => {
+    //check if required fields are filled in
+
+    if (!coData.chg || !coData.start || isNaN(coData.start.getTime()) || !coData.end || isNaN(coData.end.getTime())) {
+      setSubmissionSuccess(false);
+      return;
+    }
     onSave(coData);
     setCoData({
       malcode: "",
@@ -79,15 +69,15 @@ export default function ChangeOrderModal({
       risk: "Low",
       description: "",
       mesProvided: false,
-      start: formattedDate,
-      end: formattedDate,
+      start: FORMATTED_DATE(),
+      end: FORMATTED_DATE(),
       chg: "",
       notes: "",
     });
     closeModal();
+    setSubmissionSuccess(true);
+
   };
-  // const ENVIRONMENT_OPTIONS = ['PROD', 'PAT'];
-  // const RISK_OPTIONS = ['Low', 'Moderate', 'High', 'Very High'];
 
   const openModal = () => {
     if (!modalOpen) setModalOpen(true);
@@ -96,26 +86,8 @@ export default function ChangeOrderModal({
 
   const closeModal = () => CLOSE_MODAL(modal, modalOpen, setModalOpen);
 
-  // const openModal = () => {
-  //   if (!modalOpen) setModalOpen(true);
-  //   setTimeout(() => {
-  //     modal.current?.classList.remove('opacity-0');
-  //     modal.current?.classList.remove('-translate-y-full');
-  //     modal.current?.classList.remove('scale-150');
-  //   }, 100);
-  // }
-
-  // const closeModal = () => {
-  //   modal.current?.classList.add('-translate-y-full');
-  //   setTimeout(() => {
-  //     modal.current?.classList.add('opacity-0');
-  //     modal.current?.classList.add('scale-150');
-  //   }, 100);
-  //   setTimeout(() => {if (modalOpen) setModalOpen(false)}, 300);
-  // }
 
   useEffect(() => {
-    return () => {};
   }, []);
 
   return (
@@ -139,6 +111,9 @@ export default function ChangeOrderModal({
         {/* modal */}
         <div ref={modal} className={MODAL_STYLE}>
           {/* header */}
+          {submissionSuccess ? null : (
+            <div className="text-red-500">Please fill in the required fields.</div>
+          )}
           <div className="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
             <h2 className="text-xl font-semibold text-gray-600">
               New Change Order Entry
@@ -226,7 +201,7 @@ export default function ChangeOrderModal({
             <label className={LABEL_STYLE}>
               Start Time:
               <input
-                defaultValue={formattedDateString}
+                defaultValue={DATE_TO_FORMATTED_STRING(FORMATTED_DATE())}
                 className={INPUT_STYLE}
                 onChange={handleChange}
                 type="datetime-local"
@@ -238,7 +213,7 @@ export default function ChangeOrderModal({
             <label className={LABEL_STYLE}>
               End Time:
               <input
-                defaultValue={formattedDateString}
+                defaultValue={DATE_TO_FORMATTED_STRING(FORMATTED_DATE())}
                 className={INPUT_STYLE}
                 onChange={handleChange}
                 type="datetime-local"

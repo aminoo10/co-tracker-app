@@ -1,5 +1,4 @@
 import { RefObject } from "react";
-import { ChangeOrder } from "./ChangeOrder";
 
 export const MODAL_STYLE = `opacity-0 -translate-y-full scale-150 transform relative fixed w-11/12 md:max-w-md mx-auto rounded h-100 overflow-y-auto shadow-lg transition-opacity bg-white transition-transform duration-300`
 

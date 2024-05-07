@@ -29,6 +29,9 @@ export default function ChangeOrderEditModal({
 
   
   const [modalState, setModalState] = useState(modalOpen);
+  const [submissionSuccess, setSubmissionSuccess] = useState(true);
+
+
   const [coData, setCoData] = useState<ChangeOrder | undefined>({
     malcode: editChg?.malcode as string,
     environment: editChg?.environment as 'PROD' | 'PAT',
@@ -83,8 +86,15 @@ export default function ChangeOrderEditModal({
   };
 
   const handleEdit = () => {
+
+    if (!coData?.chg || !coData?.start || isNaN(coData?.start.getTime()) || !coData?.end || isNaN(coData?.end.getTime())) {
+      setSubmissionSuccess(false);
+      return;
+    }
+
     if (coData) onEdit(coData);
     closeModal();
+    setSubmissionSuccess(true);
   };
 
   return (
@@ -100,6 +110,11 @@ export default function ChangeOrderEditModal({
         {/* modal */}
         <div ref={editModal} className={MODAL_STYLE}>
           {/* header */}
+
+          {submissionSuccess ? null : (
+            <div className="text-red-500">Please fill in the required fields.</div>
+          )}
+
           <div className="px-4 py-3 border-b border-gray-200">
             <h2 className="text-xl font-semibold text-gray-600">
               Edit Change Order Entry
