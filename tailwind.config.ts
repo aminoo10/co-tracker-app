@@ -13,8 +13,21 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      keyframes: {
+        quake: {
+          '15%': { transform: 'translateY(20px)'},
+          '30%' : {transform: 'translateY(-40px)'},
+          '45%' : {transform: 'translateY(50px)'},
+          '60%' : {transform: 'translateY(-20px)'},
+          '75%' : {transform: 'translateY(20px)'},
+        }
+      },
+      animation: {
+        quake: 'quake 0.5s ease-in-out',
+      }
     },
   },
   plugins: [],
 }
+
 export default config

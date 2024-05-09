@@ -27,7 +27,9 @@ export default function ChangeOrderEditModal({
 }: ChangeOrderEditModalProps) {
   const editModal = useRef<HTMLDivElement>(null);
 
-  
+  const startTime =  document.getElementById('start-edit') as HTMLSelectElement
+  const endTime =  document.getElementById('end-edit') as HTMLSelectElement
+
   const [modalState, setModalState] = useState(modalOpen);
   const [submissionSuccess, setSubmissionSuccess] = useState(true);
 
@@ -47,8 +49,16 @@ export default function ChangeOrderEditModal({
 
   const closeModal = () => {
     setCoData(undefined);
+    setSubmissionSuccess(true);
+    removeRoseBorder();
     CLOSE_MODAL(editModal, modalState, close); //this is kinda fucked up to do it like this.... but whatever :P
   };
+
+  const removeRoseBorder = () => {
+    editModal.current?.classList.remove('animate-quake');
+    endTime.classList.remove('border-rose-500');
+    startTime.classList.remove('border-rose-500');
+  }
 
 
 
@@ -87,14 +97,27 @@ export default function ChangeOrderEditModal({
 
   const handleEdit = () => {
 
-    if (!coData?.chg || !coData?.start || isNaN(coData?.start.getTime()) || !coData?.end || isNaN(coData?.end.getTime())) {
+
+    if (!coData?.start || isNaN(coData?.start.getTime()) || !coData?.end || isNaN(coData?.end.getTime())) {
+      editModal.current?.classList.add('animate-quake');
       setSubmissionSuccess(false);
+
+      if (!coData?.start || isNaN(coData?.start.getTime())) {
+        startTime.classList.add('border-rose-500');
+      }else startTime.classList.remove('border-rose-500');
+
+      if (!coData?.end || isNaN(coData?.end.getTime())) {
+        endTime.classList.add('border-rose-500');
+      } else endTime.classList.remove('border-rose-500');
+
       return;
     }
 
     if (coData) onEdit(coData);
     closeModal();
+    editModal.current?.classList.remove('animate-quake');
     setSubmissionSuccess(true);
+    removeRoseBorder();
   };
 
   return (
@@ -112,7 +135,7 @@ export default function ChangeOrderEditModal({
           {/* header */}
 
           {submissionSuccess ? null : (
-            <div className="text-red-500">Please fill in the required fields.</div>
+            <div className="mx-4 my-3 text-red-500">Please fill in the required fields.</div>
           )}
 
           <div className="px-4 py-3 border-b border-gray-200">
@@ -194,6 +217,7 @@ export default function ChangeOrderEditModal({
                 className={INPUT_STYLE}
                 type="datetime-local"
                 name="start"
+                id="start-edit"
                 placeholder="Start time"
                 value={DATE_TO_FORMATTED_STRING(coData?.start || new Date())} //make method that converts date into string.
                 onChange={handleChange}
@@ -207,6 +231,7 @@ export default function ChangeOrderEditModal({
                 className={INPUT_STYLE}
                 type="datetime-local"
                 name="end"
+                id="end-edit"
                 placeholder="End time"
                 value={DATE_TO_FORMATTED_STRING(coData?.end || new Date())}
                 onChange={handleChange}
@@ -219,6 +244,7 @@ export default function ChangeOrderEditModal({
               <input
                 type="text"
                 name="chg"
+                id="chg-edit"
                 placeholder="What is the CO#?"
                 className={INPUT_STYLE}
                 disabled

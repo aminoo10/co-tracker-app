@@ -20,6 +20,11 @@ export default function ChangeOrderModal({
 }) {
   const modal = useRef<HTMLDivElement>(null);
 
+  const chgElement = document.getElementById('chg') as HTMLInputElement  
+  const startTime =  document.getElementById('start') as HTMLSelectElement
+  const endTime =  document.getElementById('end') as HTMLSelectElement
+
+
   const [modalOpen, setModalOpen] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(true);
 
@@ -34,6 +39,14 @@ export default function ChangeOrderModal({
     chg: "",
     notes: "",
   });
+
+  const removeRoseBorder = () => {
+    modal.current?.classList.remove('animate-quake');
+    endTime.classList.remove('border-rose-500');
+    startTime.classList.remove('border-rose-500');
+    chgElement.classList.remove('border-rose-500');
+  }
+
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -59,7 +72,21 @@ export default function ChangeOrderModal({
     //check if required fields are filled in
 
     if (!coData.chg || !coData.start || isNaN(coData.start.getTime()) || !coData.end || isNaN(coData.end.getTime())) {
+      modal.current?.classList.add('animate-quake'); //i want this to animate quake everytime you press the button >:(
       setSubmissionSuccess(false);
+
+      if (!coData?.chg) {
+        chgElement.classList.add('border-rose-500');
+      } else chgElement.classList.remove('border-rose-500');
+
+      if (!coData?.start || isNaN(coData?.start.getTime())) {
+        startTime.classList.add('border-rose-500');
+      }else startTime.classList.remove('border-rose-500');
+
+      if (!coData?.end || isNaN(coData?.end.getTime())) {
+        endTime.classList.add('border-rose-500');
+      } else endTime.classList.remove('border-rose-500');
+
       return;
     }
     onSave(coData);
@@ -76,7 +103,7 @@ export default function ChangeOrderModal({
     });
     closeModal();
     setSubmissionSuccess(true);
-
+    removeRoseBorder();
   };
 
   const openModal = () => {
@@ -84,7 +111,11 @@ export default function ChangeOrderModal({
     OPEN_MODAL(modal);
   };
 
-  const closeModal = () => CLOSE_MODAL(modal, modalOpen, setModalOpen);
+  const closeModal = () => {
+    setSubmissionSuccess(true);
+    removeRoseBorder();
+    CLOSE_MODAL(modal, modalOpen, setModalOpen);
+  } 
 
 
   useEffect(() => {
@@ -112,7 +143,7 @@ export default function ChangeOrderModal({
         <div ref={modal} className={MODAL_STYLE}>
           {/* header */}
           {submissionSuccess ? null : (
-            <div className="text-red-500">Please fill in the required fields.</div>
+            <div className="mx-4 my-3 text-red-500">Please fill in the required fields.</div>
           )}
           <div className="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
             <h2 className="text-xl font-semibold text-gray-600">
@@ -205,6 +236,7 @@ export default function ChangeOrderModal({
                 className={INPUT_STYLE}
                 onChange={handleChange}
                 type="datetime-local"
+                id="start"
                 name="start"
                 placeholder="Start time"
               />
@@ -216,6 +248,7 @@ export default function ChangeOrderModal({
                 defaultValue={DATE_TO_FORMATTED_STRING(FORMATTED_DATE())}
                 className={INPUT_STYLE}
                 onChange={handleChange}
+                id="end"
                 type="datetime-local"
                 name="end"
                 placeholder="End time"
@@ -228,6 +261,7 @@ export default function ChangeOrderModal({
                 type="text"
                 name="chg"
                 placeholder="What is the CO#?"
+                id="chg"
                 value={coData.chg}
                 className={INPUT_STYLE}
                 onChange={handleChange}
