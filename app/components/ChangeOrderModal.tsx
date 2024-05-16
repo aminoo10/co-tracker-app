@@ -13,11 +13,17 @@ import {
   DATE_TO_FORMATTED_STRING
 } from "../constants";
 
+
+interface ChangeOrderModalProps {
+  checkUnique: (CHG : string) => boolean;
+  onSave: (coData : ChangeOrder) => void;
+}
+
+
 export default function ChangeOrderModal({
+  checkUnique,
   onSave,
-}: {
-  onSave: (coData: ChangeOrder) => void;
-}) {
+}: ChangeOrderModalProps) {
   const modal = useRef<HTMLDivElement>(null);
 
   const chgElement = document.getElementById('chg') as HTMLInputElement  
@@ -27,6 +33,7 @@ export default function ChangeOrderModal({
 
   const [modalOpen, setModalOpen] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(true);
+  const [duplicateCHG, setDuplicateCHG] = useState(false);
 
   const [coData, setCoData] = useState<ChangeOrder>({
     malcode: "",
@@ -41,7 +48,6 @@ export default function ChangeOrderModal({
   });
 
   const removeRoseBorder = () => {
-    modal.current?.classList.remove('animate-quake');
     endTime.classList.remove('border-rose-500');
     startTime.classList.remove('border-rose-500');
     chgElement.classList.remove('border-rose-500');
@@ -74,6 +80,7 @@ export default function ChangeOrderModal({
     if (!coData.chg || !coData.start || isNaN(coData.start.getTime()) || !coData.end || isNaN(coData.end.getTime())) {
       modal.current?.classList.add('animate-quake'); //i want this to animate quake everytime you press the button >:(
       setSubmissionSuccess(false);
+      setDuplicateCHG(false);
 
       if (!coData?.chg) {
         chgElement.classList.add('border-rose-500');
@@ -81,14 +88,31 @@ export default function ChangeOrderModal({
 
       if (!coData?.start || isNaN(coData?.start.getTime())) {
         startTime.classList.add('border-rose-500');
-      }else startTime.classList.remove('border-rose-500');
+      } else startTime.classList.remove('border-rose-500');
 
       if (!coData?.end || isNaN(coData?.end.getTime())) {
         endTime.classList.add('border-rose-500');
       } else endTime.classList.remove('border-rose-500');
 
+      setTimeout(() => modal.current?.classList.remove('animate-quake'), 550); //nvm this does it :)
+
       return;
     }
+
+    if (checkUnique(coData.chg)) {
+      modal.current?.classList.add('animate-quake');
+      setDuplicateCHG(true);
+      setSubmissionSuccess(true);
+      setCoData(prevCoData => ({
+        ...prevCoData,
+        chg: "",
+      }));
+
+      setTimeout(() => modal.current?.classList.remove('animate-quake'), 550);
+
+      return;
+    } 
+
     onSave(coData);
     setCoData({
       malcode: "",
@@ -103,6 +127,7 @@ export default function ChangeOrderModal({
     });
     closeModal();
     setSubmissionSuccess(true);
+    setDuplicateCHG(false);
     removeRoseBorder();
   };
 
@@ -113,6 +138,7 @@ export default function ChangeOrderModal({
 
   const closeModal = () => {
     setSubmissionSuccess(true);
+    setDuplicateCHG(false);
     removeRoseBorder();
     CLOSE_MODAL(modal, modalOpen, setModalOpen);
   } 
@@ -124,12 +150,12 @@ export default function ChangeOrderModal({
   return (
     <div>
       <button
-        className={`modal-btn bg-blue-500 text-white font-bold py-2 px-4 ${
+        className={`modal-btn bg-green-500 text-white font-bold py-2 px-4 mt-5 mb-5 ${
           modalOpen ? "active" : ""
         }`}
         onClick={openModal}
       >
-        Show Modal
+        +
       </button>
       {/* https://tailwindcomponents.com/component/animation-modal*/}
 
@@ -145,6 +171,10 @@ export default function ChangeOrderModal({
           {submissionSuccess ? null : (
             <div className="mx-4 my-3 text-red-500">Please fill in the required fields.</div>
           )}
+          {!duplicateCHG ? null : (
+            <div className="mx-4 my-3 text-red-500">That CHG already exists, please use a different CHG#.</div>
+          )}
+
           <div className="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
             <h2 className="text-xl font-semibold text-gray-600">
               New Change Order Entry
@@ -263,6 +293,7 @@ export default function ChangeOrderModal({
                 placeholder="What is the CO#?"
                 id="chg"
                 value={coData.chg}
+                maxLength={15}
                 className={INPUT_STYLE}
                 onChange={handleChange}
               />

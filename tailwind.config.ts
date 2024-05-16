@@ -15,11 +15,11 @@ const config: Config = {
       },
       keyframes: {
         quake: {
-          '15%': { transform: 'translateY(20px)'},
-          '30%' : {transform: 'translateY(-40px)'},
+          '15%': { transform: 'translateY(50px)'},
+          '30%' : {transform: 'translateY(-50px)'},
           '45%' : {transform: 'translateY(50px)'},
-          '60%' : {transform: 'translateY(-20px)'},
-          '75%' : {transform: 'translateY(20px)'},
+          '60%' : {transform: 'translateY(-50px)'},
+          '75%' : {transform: 'translateY(50px)'},
         }
       },
       animation: {

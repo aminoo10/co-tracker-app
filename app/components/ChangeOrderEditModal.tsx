@@ -55,7 +55,6 @@ export default function ChangeOrderEditModal({
   };
 
   const removeRoseBorder = () => {
-    editModal.current?.classList.remove('animate-quake');
     endTime.classList.remove('border-rose-500');
     startTime.classList.remove('border-rose-500');
   }
@@ -110,12 +109,14 @@ export default function ChangeOrderEditModal({
         endTime.classList.add('border-rose-500');
       } else endTime.classList.remove('border-rose-500');
 
+
+      setTimeout(() => editModal.current?.classList.remove('animate-quake'), 550);
+
       return;
     }
 
     if (coData) onEdit(coData);
     closeModal();
-    editModal.current?.classList.remove('animate-quake');
     setSubmissionSuccess(true);
     removeRoseBorder();
   };

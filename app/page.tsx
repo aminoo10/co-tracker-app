@@ -62,10 +62,15 @@ export default function Home() {
     });
   }
 
+  const checkForUniqueCHG = (CHG : string): boolean => {
+    
+    return changeOrders.some((CO: ChangeOrder) => CO.chg === CHG)    
+
+  }
 
   return (
     <div id='app'>
-      <ChangeOrderModal onSave={handleSaveFormData} />
+      <ChangeOrderModal onSave={handleSaveFormData} checkUnique={checkForUniqueCHG} />
       <ChangeOrderList 
       COList={changeOrders} 
       onDelete={handleDeleteFormData} 
