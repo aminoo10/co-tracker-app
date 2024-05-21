@@ -8,11 +8,12 @@ import React, {useState} from 'react'
   onDelete: (chg: string) => void;
   onEdit: (formData : ChangeOrder) => void;
   getCHGObject: (CHG: string) => ChangeOrder;
- }
+  changeStatus: (CHG: string, direction: string) => void;
+ } 
 
  const changeOrderStyle = `changeOrder flex flex-row items-center justify-evenly mb-5`;
 
-export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit}: COListProps) {
+export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit, changeStatus}: COListProps) {
 
   const [deleteModalState, setDeleteModalState] = useState(false);
   const [editModalState, setEditModalState] = useState(false);
@@ -43,6 +44,16 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit}
     setEditModalState(false);
   }
 
+  const handlePrevStatus = (e: React.MouseEvent<HTMLButtonElement,  MouseEvent>) => {
+    const chg = e.currentTarget.parentElement?.nextElementSibling?.innerHTML || ''; 
+    changeStatus(chg, 'prev');
+  }
+
+  const handleNextStatus = (e: React.MouseEvent<HTMLButtonElement,  MouseEvent>) => {
+    const chg = e.currentTarget.parentElement?.nextElementSibling?.innerHTML || ''; 
+    changeStatus(chg, 'next');
+  }
+
 
   return (
       <div id="list">
@@ -59,9 +70,9 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit}
           <p>{(changeOrder.mesProvided) ? "True" : "False"}</p>
           <p>{changeOrder.start.toLocaleString()}</p>
           <p>{changeOrder.end.toLocaleString()}</p>
-          <div className='flex'>
+          <div className='flex justify-between w-auto'>
             
-            <button className=''>
+            <button onClick={handlePrevStatus}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-4 hover:stroke-gray-500">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
               </svg>
@@ -69,7 +80,7 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit}
 
             {changeOrder.status}
 
-            <button>
+            <button onClick={handleNextStatus}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-4 hover:stroke-gray-500">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
               </svg>

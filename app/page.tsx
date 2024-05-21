@@ -63,22 +63,25 @@ export default function Home() {
     });
   }
 
-  const prevStatus = (CHG: string) => {
-    const changeOrder = changeOrders.find((CO: ChangeOrder) => CO.chg === CHG);
-    if (changeOrder) {
-      const prevIndex = (statusOptions.indexOf(changeOrder.status) - 1 + statusOptions.length) % statusOptions.length;
-      changeOrder.status = statusOptions[prevIndex];
-    }
-  }
+  const changeStatus = (CHG: string, direction: string) => {
 
-  const nextStatus = (CHG: string) => {
-    const changeOrder = changeOrders.find((CO: ChangeOrder) => CO.chg === CHG);
-    if (changeOrder) {
-      const nextIndex = (statusOptions.indexOf(changeOrder.status) +1) % statusOptions.length;
-      changeOrder.status = statusOptions[nextIndex];
-    }
+    setChangeOrders((prevChangeOrders) => {
+      const index = prevChangeOrders.findIndex((changeOrder) => changeOrder.chg === CHG);
+      if (index === -1) return prevChangeOrders;
 
-  }
+      const updatedChangeOrder = {
+        ...prevChangeOrders[index],
+        status: direction === 'prev' ? statusOptions[(statusOptions.indexOf(prevChangeOrders[index].status) - 1 + statusOptions.length) % statusOptions.length]
+                                     : statusOptions[(statusOptions.indexOf(prevChangeOrders[index].status) + 1) % statusOptions.length], 
+      };
+      
+      return [
+        ...prevChangeOrders.slice(0, index),
+        updatedChangeOrder,
+        ...prevChangeOrders.slice(index + 1),
+      ];
+    });
+  };
 
   const checkForUniqueCHG = (CHG : string): boolean => {
     
@@ -94,6 +97,7 @@ export default function Home() {
       onDelete={handleDeleteFormData} 
       onEdit={handleEditFormData}
       getCHGObject={getCHGObject}
+      changeStatus={changeStatus}
       />
     </div>
   )
