@@ -6,7 +6,7 @@ import React, {useState} from 'react';
 import './globals.css'
 
 
-
+const statusOptions: string[] = ["New", "Technical Review", "Stakeholder Review", "CAB Approval", 'Scheduled', 'Implementation Complete', 'Implementation Failed', 'Canceled'];
 
 const testInstance: ChangeOrder = {
   malcode: 'FUCK',
@@ -17,6 +17,7 @@ const testInstance: ChangeOrder = {
   start: new Date(2023, 10, 7, 0, 0),
   end: new Date(2023, 10, 7, 7, 0),
   chg: 'CHG1276486',
+  status: 'New',
   notes: 'these are my fucking notes!!!!'
 }
 
@@ -60,6 +61,23 @@ export default function Home() {
         return co;
       });
     });
+  }
+
+  const prevStatus = (CHG: string) => {
+    const changeOrder = changeOrders.find((CO: ChangeOrder) => CO.chg === CHG);
+    if (changeOrder) {
+      const prevIndex = (statusOptions.indexOf(changeOrder.status) - 1 + statusOptions.length) % statusOptions.length;
+      changeOrder.status = statusOptions[prevIndex];
+    }
+  }
+
+  const nextStatus = (CHG: string) => {
+    const changeOrder = changeOrders.find((CO: ChangeOrder) => CO.chg === CHG);
+    if (changeOrder) {
+      const nextIndex = (statusOptions.indexOf(changeOrder.status) +1) % statusOptions.length;
+      changeOrder.status = statusOptions[nextIndex];
+    }
+
   }
 
   const checkForUniqueCHG = (CHG : string): boolean => {

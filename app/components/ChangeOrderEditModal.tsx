@@ -43,6 +43,7 @@ export default function ChangeOrderEditModal({
     start: editChg?.start as Date,
     end: editChg?.end as Date,
     chg: editChg?.chg as string,
+    status: editChg?.chg as string,
     notes: editChg?.notes as string,
   });
 

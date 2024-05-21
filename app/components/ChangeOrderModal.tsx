@@ -44,6 +44,7 @@ export default function ChangeOrderModal({
     start: FORMATTED_DATE(),
     end: FORMATTED_DATE(),
     chg: "",
+    status: "New",
     notes: "",
   });
 
@@ -123,6 +124,7 @@ export default function ChangeOrderModal({
       start: FORMATTED_DATE(),
       end: FORMATTED_DATE(),
       chg: "",
+      status: "New",
       notes: "",
     });
     closeModal();
