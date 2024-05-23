@@ -1,7 +1,7 @@
 import {ChangeOrder} from '../ChangeOrder';
 import ChangeOrderDeleteModal from "./ChangeOrderDeleteModal"
 import ChangeOrderEditModal from "./ChangeOrderEditModal"
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 
  interface COListProps {
   COList: ChangeOrder[];
@@ -11,7 +11,8 @@ import React, {useState, useEffect} from 'react'
   changeStatus: (CHG: string, direction: string) => void;
  } 
 
- const changeOrderStyle = `changeOrder flex flex-row items-center justify-evenly mb-5`;
+ const changeOrderStyle = `changeOrder flex items-center justify-center text-center mb-5`;
+ const flexBasis = `basis-1/12`;
 
 export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit, changeStatus}: COListProps) {
 
@@ -19,7 +20,6 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
   const [editModalState, setEditModalState] = useState(false);
   const [selectedChg, setSelectedChg] = useState<string>('');
   const [chgToEdit, setChgToEdit] = useState<ChangeOrder | undefined>();
-  // const [animationClass, setAnimationClass] = useState('');
 
   const openDeleteModal = (e: React.MouseEvent<HTMLButtonElement,  MouseEvent>) => {
     //uhh maybe figure out better way to do this, but it works!
@@ -47,30 +47,13 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
 
   const handlePrevStatus = (e: React.MouseEvent<HTMLButtonElement,  MouseEvent>) => {
     const chg = e.currentTarget.parentElement?.nextElementSibling?.innerHTML || ''; 
-    // triggerStatusChangeAnimation('prev');
-    // setTimeout(() => changeStatus(chg, 'prev'), 300); // Delay status change to sync with animation
     changeStatus(chg, 'prev');
   }
 
   const handleNextStatus = (e: React.MouseEvent<HTMLButtonElement,  MouseEvent>) => {
     const chg = e.currentTarget.parentElement?.nextElementSibling?.innerHTML || ''; 
-    // triggerStatusChangeAnimation('next');
-    // setTimeout(() => changeStatus(chg, 'next'), 300); // Delay status change to sync with animation
     changeStatus(chg, 'next');
   }
-
-  // const triggerStatusChangeAnimation = (direction: string) => {
-  //   setAnimationClass(direction === 'next' ? 'animate-slide-left' : 'animate-slide-right');
-  //   setTimeout(() => setAnimationClass(''), 300);
-   
-  // }
-
-  // useEffect(() => {
-  //   if (animationClass) {
-  //     const timer = setTimeout(() => setAnimationClass(''), 300);
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [animationClass]);
 
 
   return (
@@ -81,34 +64,34 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
         {COList.map(changeOrder => {
 
           return (<div className={changeOrderStyle}>
-          <p>{changeOrder.malcode}</p>
-          <p>{changeOrder.environment}</p>
-          <p>{changeOrder.risk}</p>
-          <p>{changeOrder.description}</p>
-          <p>{(changeOrder.mesProvided) ? "True" : "False"}</p>
-          <p>{changeOrder.start.toLocaleString()}</p>
-          <p>{changeOrder.end.toLocaleString()}</p>
-          <div className='flex'>
+          <p className={flexBasis}>{changeOrder.malcode}</p>
+          <p className={flexBasis}>{changeOrder.environment}</p>
+          <p className={flexBasis}> {changeOrder.risk}</p>
+          <p className='basis-2/12'>{changeOrder.description}</p>
+          <p className={flexBasis}>{(changeOrder.mesProvided) ? "True" : "False"}</p>
+          <p className='basis-2/12'>{changeOrder.start.toLocaleString()}</p>
+          <p className='basis-2/12'>{changeOrder.end.toLocaleString()}</p>
+
+          <div className={`flex justify-between basis-2/12`}>
             
-            <button onClick={handlePrevStatus} className='transition-transform transform hover:scale-110'>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-4 hover:stroke-gray-500">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+            <button onClick={handlePrevStatus}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-4 hover:stroke-gray-500 hover:scale-110">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
               </svg>
             </button>
 
-            {/* <div className={`w-full h-full flex items-center ${animationClass}`}> */}
               {changeOrder.status}
-            {/* </div> */}
 
-            <button onClick={handleNextStatus} className='transition-transform transform hover:scale-110'>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-4 hover:stroke-gray-500">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            <button onClick={handleNextStatus}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-4 hover:stroke-gray-500 hover:scale-110">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
               </svg>
             </button>
 
           </div>
-          <p className='chg'>{changeOrder.chg}</p>
-          <p>{changeOrder.notes}</p>
+
+          <p className={flexBasis}>{changeOrder.chg}</p>
+          <p className={`truncate ${flexBasis}`}>{changeOrder.notes}</p>
           <div className='button-list flex flex-col'>
 
             <button
