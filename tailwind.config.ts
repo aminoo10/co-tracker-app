@@ -14,6 +14,14 @@ const config: Config = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       keyframes: {
+        slideLeft: {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        slideRight: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': {transform: 'translateX(0)'},
+        },
         quake: {
           '15%': { transform: 'translateY(50px)'},
           '30%' : {transform: 'translateY(-50px)'},
@@ -24,6 +32,8 @@ const config: Config = {
       },
       animation: {
         quake: 'quake 0.5s ease-in-out',
+        'slide-left': 'slideLeft 0.3s ease-in-out',
+        'slide-right': 'slideRight 0.3s ease-in-out',
       }
     },
   },
