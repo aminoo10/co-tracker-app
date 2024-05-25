@@ -8,6 +8,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      minHeight: {
+        '80v': '80vh',
+        '85v': '85vh',
+        '90v': '90vh',
+        '95v': '95vh',
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
