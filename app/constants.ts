@@ -58,6 +58,29 @@ export const DATE_TO_FORMATTED_STRING = (date : Date) => {
         .padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
 }
 
+export const GET_CLASS_NAMES = (text: string) => {
+    switch (text) {
+        case 'Technical Review':
+            return 'bg-[#FFB0EE] text-[#FF06C8]';
+        case 'Stakeholder Review':
+            return 'bg-[#DABBF2] text-[#9206FF]';
+        case 'CAB Approval':
+            return 'bg-[#EEDB77] text-[#9C7207]';
+        case 'Scheduled':
+            return 'bg-[#B7B6FF] text-[#0B06FF]';
+        case 'Implement':
+            return 'bg-[#BBFFEB] text-[#00A372]';
+        case 'Implementation Complete':
+            return 'bg-[#D7FFC9] text-[#228500]';
+        case 'Implementation Failed':
+            return 'bg-[#FFC9C9] text-[#A30000]';
+        case 'Canceled':
+            return 'bg-black text-white';
+        default: 
+            return ''
+    }
+}
+
    
 
 // export function CLOSE_MODAL(modal: RefObject<HTMLDivElement>, state: boolean, close: () => void) {

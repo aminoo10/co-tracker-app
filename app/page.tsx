@@ -6,7 +6,7 @@ import React, {useState} from 'react';
 import './globals.css'
 
 
-const statusOptions: string[] = ["New", "Technical Review", "Stakeholder Review", "CAB Approval", 'Scheduled', 'Implementation Complete', 'Implementation Failed', 'Canceled'];
+const statusOptions: string[] = ["New", "Technical Review", "Stakeholder Review", "CAB Approval", 'Scheduled', 'Implement', 'Implementation Complete', 'Implementation Failed', 'Canceled'];
 
 const testInstance: ChangeOrder = {
   malcode: 'FUCK',

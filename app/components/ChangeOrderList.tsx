@@ -1,7 +1,9 @@
 import {ChangeOrder} from '../ChangeOrder';
 import ChangeOrderDeleteModal from "./ChangeOrderDeleteModal"
 import ChangeOrderEditModal from "./ChangeOrderEditModal"
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import {GET_CLASS_NAMES} from "../constants";
+
 
  interface COListProps {
   COList: ChangeOrder[];
@@ -54,6 +56,12 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
     changeStatus(chg, 'next');
   }
 
+  useEffect(() => {
+
+    
+
+  }, []);
+
 
   return (
       <div id="main">
@@ -76,7 +84,7 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
             <p>Notes</p>
           </div>
         </div>
-        <div id='list' className='border-solid rounded-md border-4 border-[#ABCEA1] min-h-85v mb-5'>
+        <div className='border-solid rounded-md border-4 border-[#ABCEA1] min-h-85v mb-5'>
         {COList.map(changeOrder => {
 
           return (
@@ -87,18 +95,18 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
           <p>{changeOrder.description}</p>
           <p>{(changeOrder.mesProvided) ? "True" : "False"}</p>
 
-          <div className={`flex justify-between`}>
+          <div id='status' className={`flex justify-between h-full w-full`}>
             
-            <button onClick={handlePrevStatus}>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-4 hover:stroke-gray-500 hover:scale-110">
+            <button onClick={handlePrevStatus} className=''>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-full hover:bg-gray-300 hover:stroke-gray-600">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
               </svg>
             </button>
 
-              {changeOrder.status}
+            <span className={`${(GET_CLASS_NAMES(changeOrder.status))} h-full w-full flex items-center justify-center`}>{changeOrder.status}</span>
 
-            <button onClick={handleNextStatus}>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-4 hover:stroke-gray-500 hover:scale-110">
+            <button onClick={handleNextStatus} className=''>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-full hover:bg-gray-300 hover:stroke-gray-600">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
               </svg>
             </button>
