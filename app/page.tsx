@@ -83,6 +83,20 @@ export default function Home() {
     });
   };
 
+  const changeMESProvided = (CHG: string) => {
+    setChangeOrders(prevArray => {
+      return prevArray.map(co => {
+        if (co.chg === CHG) {
+          co = {
+            ...co,
+            mesProvided: !co.mesProvided
+          }
+        }
+        return co;
+      });
+    });
+  }
+
   const checkForUniqueCHG = (CHG : string): boolean => {
     
     return changeOrders.some((CO: ChangeOrder) => CO.chg === CHG)    
@@ -98,6 +112,7 @@ export default function Home() {
       onEdit={handleEditFormData}
       getCHGObject={getCHGObject}
       changeStatus={changeStatus}
+      changeMESProvided={changeMESProvided}
       />
     </div>
   )

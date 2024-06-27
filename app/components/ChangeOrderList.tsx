@@ -2,7 +2,7 @@ import {ChangeOrder} from '../ChangeOrder';
 import ChangeOrderDeleteModal from "./ChangeOrderDeleteModal"
 import ChangeOrderEditModal from "./ChangeOrderEditModal"
 import React, {useState, useEffect} from 'react'
-import {GET_CLASS_NAMES} from "../constants";
+import {GET_STATE_NAMES, GET_RISK_NAMES} from "../constants";
 
 
  interface COListProps {
@@ -11,11 +11,12 @@ import {GET_CLASS_NAMES} from "../constants";
   onEdit: (formData : ChangeOrder) => void;
   getCHGObject: (CHG: string) => ChangeOrder;
   changeStatus: (CHG: string, direction: string) => void;
+  changeMESProvided: (CHG: string) => void;
  } 
 
  const changeOrderStyle = `changeOrder grid grid-cols-11 gap-1 items-center justify-center text-center ml-2`;
 
-export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit, changeStatus}: COListProps) {
+export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit, changeStatus, changeMESProvided}: COListProps) {
 
   const [deleteModalState, setDeleteModalState] = useState(false);
   const [editModalState, setEditModalState] = useState(false);
@@ -44,6 +45,12 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
   const closeEditModal = () => {
     setChgToEdit(undefined);
     setEditModalState(false);
+  }
+
+  const handleMESProvided = (e: React.MouseEvent<HTMLButtonElement,  MouseEvent>) => {
+    const chg = e.currentTarget.nextElementSibling?.nextElementSibling?.nextElementSibling?.nextElementSibling?.innerHTML || '';
+    console.log(chg);
+    changeMESProvided(chg);
   }
 
   const handlePrevStatus = (e: React.MouseEvent<HTMLButtonElement,  MouseEvent>) => {
@@ -91,9 +98,9 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
           <div className={`bg-slate-200 m-5 ${changeOrderStyle}`}>
           <p>{changeOrder.malcode}</p>
           <p>{changeOrder.environment}</p>
-          <p> {changeOrder.risk}</p>
+          <p className={`${(GET_RISK_NAMES(changeOrder.risk))} h-full w-full flex items-center justify-center`}> {changeOrder.risk}</p>
           <p>{changeOrder.description}</p>
-          <p>{(changeOrder.mesProvided) ? "True" : "False"}</p>
+          <button onClick={handleMESProvided}>{(changeOrder.mesProvided) ? "True" : "False"}</button>
 
           <div id='status' className={`flex justify-between h-full w-full`}>
             
@@ -103,7 +110,7 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
               </svg>
             </button>
 
-            <span className={`${(GET_CLASS_NAMES(changeOrder.status))} h-full w-full flex items-center justify-center`}>{changeOrder.status}</span>
+            <span className={`${(GET_STATE_NAMES(changeOrder.status))} h-full w-full flex items-center justify-center`}>{changeOrder.status}</span>
 
             <button onClick={handleNextStatus} className=''>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-full hover:bg-gray-300 hover:stroke-gray-600">

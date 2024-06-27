@@ -58,7 +58,7 @@ export const DATE_TO_FORMATTED_STRING = (date : Date) => {
         .padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
 }
 
-export const GET_CLASS_NAMES = (text: string) => {
+export const GET_STATE_NAMES = (text: string) => {
     switch (text) {
         case 'Technical Review':
             return 'bg-[#FFB0EE] text-[#FF06C8]';
@@ -77,7 +77,18 @@ export const GET_CLASS_NAMES = (text: string) => {
         case 'Canceled':
             return 'bg-black text-white';
         default: 
-            return ''
+            return 'bg-white text-black'
+    }
+}
+
+export const GET_RISK_NAMES = (text: string) => {
+    switch (text) {
+        case 'Low':
+            return 'bg-[#CDECB5] text-[#2D7813]';
+        case 'Moderate': 
+            return 'bg-[#EEDB77] text-[#825E03]';
+        default:
+            return 'bg-[#ECB5B5] text-[#781313]'
     }
 }
 
