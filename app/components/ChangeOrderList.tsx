@@ -49,7 +49,6 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
 
   const handleMESProvided = (e: React.MouseEvent<HTMLButtonElement,  MouseEvent>) => {
     const chg = e.currentTarget.nextElementSibling?.nextElementSibling?.nextElementSibling?.nextElementSibling?.innerHTML || '';
-    console.log(chg);
     changeMESProvided(chg);
   }
 
@@ -95,29 +94,30 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
         {COList.map(changeOrder => {
 
           return (
-          <div className={`bg-slate-200 m-5 ${changeOrderStyle}`}>
+          <div className={`bg-[#E5E5E5] m-5 ${changeOrderStyle}`}>
           <p>{changeOrder.malcode}</p>
           <p>{changeOrder.environment}</p>
-          <p className={`${(GET_RISK_NAMES(changeOrder.risk))} h-full w-full flex items-center justify-center`}> {changeOrder.risk}</p>
+
+          <div className={`${(GET_RISK_NAMES(changeOrder.risk))} h-full w-full flex items-center justify-center relative`}>
+            <span className='focus:outline-none px-3 py-1 bg-red-500 text-white absolute -top-4 -right-4'>!</span>
+            <p> {changeOrder.risk}</p>
+          </div>
+
           <p>{changeOrder.description}</p>
           <button onClick={handleMESProvided}>{(changeOrder.mesProvided) ? "True" : "False"}</button>
 
           <div id='status' className={`flex justify-between h-full w-full`}>
-            
             <button onClick={handlePrevStatus} className=''>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-full hover:bg-gray-300 hover:stroke-gray-600">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
               </svg>
             </button>
-
             <span className={`${(GET_STATE_NAMES(changeOrder.status))} h-full w-full flex items-center justify-center`}>{changeOrder.status}</span>
-
             <button onClick={handleNextStatus} className=''>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-full hover:bg-gray-300 hover:stroke-gray-600">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
               </svg>
             </button>
-
           </div>
 
           <p>{changeOrder.start.toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit'})}</p>
