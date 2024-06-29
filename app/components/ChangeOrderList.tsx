@@ -113,7 +113,7 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
 
           <p>{changeOrder.description}</p>
           {/* <button onClick={handleMESProvided}>{(changeOrder.mesProvided) ? "True" : "False"}</button> */}
-          <p>{(changeOrder.mesProvided) ? "True" : "False"}</p>
+          <p>{(changeOrder.mesProvided) ? "Yes" : "No"}</p>
 
 
           <div id='status' className={`flex justify-between h-full w-full`}>
