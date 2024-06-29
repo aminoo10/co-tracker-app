@@ -30,3 +30,23 @@ body {
 #test {
   color: red;
 }
+
+/*for hover div tooltip make visible*/
+
+.tooltip {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.risk-alert:hover .tooltip {
+  visibility: visible;
+  opacity: 0.85
+}
+
+.tooltip-arrow {
+  border-left: 15px solid transparent; /* Half of the base width */
+  border-right: 15px solid transparent; /* Half of the base width */
+  border-top: 20px solid #DD2727; /* Height of the triangle, and color */
+  opacity: 0.85;
+}

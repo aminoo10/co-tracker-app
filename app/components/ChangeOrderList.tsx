@@ -2,6 +2,7 @@ import {ChangeOrder} from '../ChangeOrder';
 import ChangeOrderDeleteModal from "./ChangeOrderDeleteModal"
 import ChangeOrderEditModal from "./ChangeOrderEditModal"
 import React, {useState, useEffect} from 'react'
+import Tooltip from "./Tooltip"
 import {GET_STATE_NAMES, GET_RISK_NAMES} from "../constants";
 
 
@@ -100,13 +101,12 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
 
           <div className={`${(GET_RISK_NAMES(changeOrder.risk))} h-full w-full flex items-center justify-center relative`}>
 
-            <span data-tooltip-target='tooltip-default' className='px-3 py-1 bg-red-500 hover:bg-red-700 text-white absolute -top-4 -right-3'>!</span>
-            
-            <div id="tooltip-default" role='tooltip' className='absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700'>
-              Test1234
-              <div className='tooltip-arrow' data-popper-arrow></div>
+            <div className='risk-alert px-3 py-1 bg-red-500 hover:bg-red-700 text-white absolute -top-4 -right-3'>
+              {/* <span className='absolute tooltip rounded shadow-lg p-1 bg-gray-100 text-red-500 -mt-8'>Test1234</span> */}
+              <Tooltip>This change needs to be submitted 5 business days prior. Please submit the change to avoid expedited status.</Tooltip>
+              !
             </div>
-
+            
             <p> {changeOrder.risk}</p>
 
           </div>
