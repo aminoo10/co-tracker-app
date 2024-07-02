@@ -10,12 +10,12 @@ const statusOptions: string[] = ["New", "Technical Review", "Stakeholder Review"
 
 const testInstance: ChangeOrder = {
   malcode: 'FUCK',
-  environment: 'PAT',
-  risk: 'High',
+  environment: 'PROD',
+  risk: 'Low',
   description: 'Stupid fucking bullshit',
   mesProvided: true,
-  start: new Date(2023, 10, 7, 0, 0),
-  end: new Date(2023, 10, 7, 7, 0),
+  start: new Date(2024, 6, 2, 0, 0),
+  end: new Date(2024, 6, 2, 7, 0),
   chg: 'CHG1276486',
   status: 'New',
   notes: 'these are my fucking notes!!!!'

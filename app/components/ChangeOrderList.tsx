@@ -2,7 +2,7 @@ import {ChangeOrder} from '../ChangeOrder';
 import ChangeOrderDeleteModal from "./ChangeOrderDeleteModal"
 import ChangeOrderEditModal from "./ChangeOrderEditModal"
 import React, {useState, useEffect} from 'react'
-import {GET_STATE_NAMES, GET_RISK_NAMES} from "../constants";
+import {GET_STATE_NAMES, GET_RISK_NAMES, GET_RISK_DAYS} from "../constants";
 
 
  interface COListProps {
@@ -14,7 +14,9 @@ import {GET_STATE_NAMES, GET_RISK_NAMES} from "../constants";
   changeMESProvided: (CHG: string) => void;
  } 
 
- const changeOrderStyle = `changeOrder grid grid-cols-11 gap-1 items-center justify-center text-center ml-2`;
+
+
+const changeOrderStyle = `changeOrder grid grid-cols-11 gap-1 items-center justify-center text-center ml-2`;
 
 export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit, changeStatus, changeMESProvided}: COListProps) {
 
@@ -62,10 +64,11 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
     changeStatus(chg, 'next');
   }
 
+
   useEffect(() => {
-
-    
-
+    // if (COList.length > 0) {
+    //   console.log(GET_RISK_DAYS(COList[0].start, COList[0].risk, COList[0].environment, COList[0].status));
+    // } 
   }, []);
 
 
@@ -100,16 +103,16 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
 
           <div className={`${(GET_RISK_NAMES(changeOrder.risk))} h-full w-full flex items-center justify-center relative`}>
 
-            <div className='risk-alert px-3 py-1 bg-red-500 hover:bg-red-700 text-white absolute -top-4 -right-3 font-bold'>
+            {GET_RISK_DAYS(changeOrder.start, changeOrder.risk, changeOrder.environment, changeOrder.status) && <div className='risk-alert px-3 py-1 bg-red-500 hover:bg-red-700 text-white absolute -top-4 -right-3 font-bold'>
               {/* <Tooltip>This change needs to be submitted 5 business days prior. Please submit the change to avoid expedited status.</Tooltip> */}
               <div className='tooltip'>
                 <span className='absolute -left-36 -top-[100px] tooltip rounded shadow-lg p-1 bg-[#DD2727] text-white w-80'>
-                This change needs to be submitted 5 business days prior. Please submit the change to avoid expedited status.
+                This change needs to be submitted <span className='text-[#530404]'>{GET_RISK_DAYS(changeOrder.start, changeOrder.risk, changeOrder.environment, changeOrder.status)}</span> prior. Please submit the change to avoid expedited status.
                 </span>
                 <span className='tooltip-arrow absolute -left-0.5 -top-5'></span>
               </div>
               !
-            </div>
+            </div>}
             
             <p> {changeOrder.risk}</p>
 
@@ -137,7 +140,7 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
           <p>{changeOrder.start.toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit'})}</p>
           <p>{changeOrder.end.toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit'})}</p>
           <p>{changeOrder.chg}</p>
-          <p className={`truncate`}>{changeOrder.notes}</p>
+          <p className={`truncate`} title={changeOrder.notes}>{changeOrder.notes}</p>
 
           <div className='button-list flex flex-col items-start justify-center bg-white pl-1'>
             <button
