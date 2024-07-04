@@ -2,7 +2,7 @@ import {ChangeOrder} from '../ChangeOrder';
 import ChangeOrderDeleteModal from "./ChangeOrderDeleteModal"
 import ChangeOrderEditModal from "./ChangeOrderEditModal"
 import React, {useState, useEffect} from 'react'
-import {GET_STATE_NAMES, GET_RISK_NAMES, GET_RISK_DAYS} from "../constants";
+import {GET_STATE_NAMES, GET_RISK_NAMES, GET_RISK_DAYS, DATE_DIFFERENCE} from "../constants";
 
 
  interface COListProps {
@@ -66,9 +66,6 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
 
 
   useEffect(() => {
-    // if (COList.length > 0) {
-    //   console.log(GET_RISK_DAYS(COList[0].start, COList[0].risk, COList[0].environment, COList[0].status));
-    // } 
   }, []);
 
 
@@ -109,9 +106,9 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
                 <span className='absolute -left-36 -top-[100px] tooltip rounded shadow-lg p-1 bg-[#DD2727] text-white w-80'>
                 This change needs to be submitted <span className='text-[#530404]'>{GET_RISK_DAYS(changeOrder.start, changeOrder.risk, changeOrder.environment, changeOrder.status)}</span> prior. Please submit the change to avoid expedited status.
                 </span>
-                <span className='tooltip-arrow absolute -left-0.5 -top-5'></span>
+                <span className='tooltip-arrow-red absolute -left-0.5 -top-5'></span>
               </div>
-              !
+              <p className='select-none'>!</p>
             </div>}
             
             <p> {changeOrder.risk}</p>
@@ -138,7 +135,18 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
           </div>
 
           <p>{changeOrder.start.toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit'})}</p>
-          <p>{changeOrder.end.toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit'})}</p>
+
+          <div className={`relative ${((DATE_DIFFERENCE(changeOrder.end) <= 1) && changeOrder.status === 'Implement' ? 'end-time-warning text-red-500 font-bold' : '')}`}>
+            <div className='tooltip'>
+              <span className='absolute -left-[115px] -top-[100px] tooltip rounded shadow-lg p-1 bg-[#909090] text-black w-96 opacity-100'>
+              This change is scheduled to end today. Please make sure to confirm with the proper resources before closing this change.
+              </span>
+              <span className='tooltip-arrow-gray absolute right-16 -top-5'></span>
+            </div>
+            <p>{changeOrder.end.toLocaleString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit'})}</p>
+          </div>
+
+
           <p>{changeOrder.chg}</p>
           <p className={`truncate`} title={changeOrder.notes}>{changeOrder.notes}</p>
 

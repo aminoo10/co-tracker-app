@@ -44,9 +44,25 @@ body {
   opacity: 0.85
 }
 
-.tooltip-arrow {
+.end-time-warning:hover .tooltip {
+  visibility: visible;
+  opacity: 0.90;
+}
+
+
+.tooltip-arrow-red {
   border-left: 15px solid transparent; /* Half of the base width */
   border-right: 15px solid transparent; /* Half of the base width */
   border-top: 20px solid #DD2727; /* Height of the triangle, and color */
   opacity: 0.85;
 }
+
+.tooltip-arrow-gray {
+  border-left: 15px solid transparent; /* Half of the base width */
+  border-right: 15px solid transparent; /* Half of the base width */
+  border-top: 20px solid #909090; /* Height of the triangle, and color */
+  opacity: 0.85;
+}
+
+
+

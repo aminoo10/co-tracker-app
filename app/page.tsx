@@ -17,7 +17,7 @@ const testInstance: ChangeOrder = {
   start: new Date(2024, 6, 2, 0, 0),
   end: new Date(2024, 6, 2, 7, 0),
   chg: 'CHG1276486',
-  status: 'New',
+  status: 'Implement',
   notes: 'these are my fucking notes!!!!'
 }
 

@@ -59,7 +59,7 @@ export const DATE_TO_FORMATTED_STRING = (date : Date) => {
 }
 
 export const DATE_DIFFERENCE = (date: Date) =>  {
-    const timeDiff = Math.abs(FORMATTED_DATE().getTime() - date.getTime());
+    const timeDiff = date.getTime() - FORMATTED_DATE().getTime();
     const diffInDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
     return diffInDays;
@@ -80,6 +80,12 @@ export const GET_RISK_DAYS = (date: Date, risk: string, environment: string, sta
 
     return false;
 }
+
+// export const GET_CLOSE_TO_HOUR_END = (date: Date, status: string) => {
+//     const timeDiff = date.getTime() - FORMATTED_DATE().getTime();
+//     const diffInHours = Math.ceil(timeDiff / (1000 * 3600));
+//     return (diffInHours <= 1 && status === 'Implement');
+// }
 
 
 

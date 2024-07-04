@@ -147,7 +147,8 @@ export default function ChangeOrderModal({
 
 
   useEffect(() => {
-  }, []);
+    if (!modalOpen) console.log(coData);
+  }, [coData]);
 
   return (
     <div>
