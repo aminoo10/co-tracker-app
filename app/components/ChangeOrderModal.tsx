@@ -37,7 +37,7 @@ export default function ChangeOrderModal({
 
   const [coData, setCoData] = useState<ChangeOrder>({
     malcode: "",
-    environment: "PAT",
+    environment: "PROD",
     risk: "Low",
     description: "",
     mesProvided: false,
@@ -52,6 +52,21 @@ export default function ChangeOrderModal({
     endTime.classList.remove('border-rose-500');
     startTime.classList.remove('border-rose-500');
     chgElement.classList.remove('border-rose-500');
+  }
+
+  const initializeCO = () => {
+    setCoData({
+      malcode: "",
+      environment: "PROD",
+      risk: "Low",
+      description: " ",
+      mesProvided: false,
+      start: FORMATTED_DATE(),
+      end: FORMATTED_DATE(),
+      chg: "",
+      status: "New",
+      notes: "",
+    });
   }
 
 
@@ -115,18 +130,7 @@ export default function ChangeOrderModal({
     } 
 
     onSave(coData);
-    setCoData({
-      malcode: "",
-      environment: "PAT",
-      risk: "Low",
-      description: "",
-      mesProvided: false,
-      start: FORMATTED_DATE(),
-      end: FORMATTED_DATE(),
-      chg: "",
-      status: "New",
-      notes: "",
-    });
+    initializeCO();
     closeModal();
     setSubmissionSuccess(true);
     setDuplicateCHG(false);
@@ -147,7 +151,7 @@ export default function ChangeOrderModal({
 
 
   useEffect(() => {
-    if (!modalOpen) console.log(coData);
+    console.log(coData);
   }, [coData]);
 
   return (
@@ -208,12 +212,13 @@ export default function ChangeOrderModal({
                 id="environment"
                 className={INPUT_STYLE}
                 onChange={handleChange}
+                value={coData.environment}
               >
                 <option value="" disabled>
                   Choose an option
                 </option>
                 {ENVIRONMENT_OPTIONS.map((option) => (
-                  <option key={option} value={option}>
+                  <option key={option} value={option} selected>
                     {option}
                   </option>
                 ))}
@@ -227,6 +232,7 @@ export default function ChangeOrderModal({
                 id="risk"
                 className={INPUT_STYLE}
                 onChange={handleChange}
+                value={coData.risk}
               >
                 <option value="" disabled>
                   Choose an option
@@ -255,6 +261,7 @@ export default function ChangeOrderModal({
               Description
               <input
                 type="text"
+                value={coData.description}
                 name="description"
                 placeholder="What is this change?"
                 className={INPUT_STYLE}
