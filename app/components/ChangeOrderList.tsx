@@ -2,7 +2,11 @@ import {ChangeOrder} from '../ChangeOrder';
 import ChangeOrderDeleteModal from "./ChangeOrderDeleteModal"
 import ChangeOrderEditModal from "./ChangeOrderEditModal"
 import React, {useState, useEffect} from 'react'
-import {GET_STATE_NAMES, GET_RISK_NAMES, GET_RISK_DAYS, DATE_DIFFERENCE} from "../constants";
+import {GET_STATE_NAMES, 
+  GET_RISK_NAMES, 
+  GET_RISK_DAYS, 
+  DATE_DIFFERENCE, 
+  DETERMINE_CO_BG} from "../constants";
 
 
  interface COListProps {
@@ -94,11 +98,11 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
         {COList.map(changeOrder => {
 
           return (
-          <div className={`bg-[#E5E5E5] m-5 ${changeOrderStyle}`}>
+          <div className={`${DETERMINE_CO_BG(changeOrder.status)} m-5 ${changeOrderStyle}`}>
           <p>{changeOrder.malcode}</p>
           <p>{changeOrder.environment}</p>
 
-          <div className={`${(GET_RISK_NAMES(changeOrder.risk))} h-full w-full flex items-center justify-center relative`}>
+          <div className={`${(GET_RISK_NAMES(changeOrder.risk, changeOrder.status))} h-full w-full flex items-center justify-center relative`}>
 
             {GET_RISK_DAYS(changeOrder.start, changeOrder.risk, changeOrder.environment, changeOrder.status) && <div className='risk-alert px-3 py-1 bg-red-500 hover:bg-red-700 text-white absolute -top-4 -right-3 font-bold'>
               {/* <Tooltip>This change needs to be submitted 5 business days prior. Please submit the change to avoid expedited status.</Tooltip> */}
@@ -122,13 +126,13 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
 
           <div id='status' className={`flex justify-between h-full w-full`}>
             <button onClick={handlePrevStatus} className=''>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-full hover:bg-gray-300 hover:stroke-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-full hover:bg-[#00000020] hover:stroke-[#ffffff95]">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
               </svg>
             </button>
             <span className={`${(GET_STATE_NAMES(changeOrder.status))} h-full w-full flex items-center justify-center`}>{changeOrder.status}</span>
             <button onClick={handleNextStatus} className=''>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-full hover:bg-gray-300 hover:stroke-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-full hover:bg-[#00000020] hover:stroke-[#ffffff95]">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
               </svg>
             </button>

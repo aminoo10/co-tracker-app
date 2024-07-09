@@ -64,5 +64,10 @@ body {
   opacity: 0.85;
 }
 
+.changeOrder {
+  transition: background-color 0.5s ease; /*THIS LOOKS SO FUCKING GOOD AAAAAAAAAAAAAAAH*/
+}
+
+
 
 

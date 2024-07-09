@@ -22,6 +22,19 @@ setTimeout(() => {
   
 }
 
+export const DETERMINE_CO_BG = (status: string) => {
+    switch(status) {
+        case 'Implementation Complete':
+            return 'bg-[#D7FFC9] text-[#228500]';
+        case 'Implementation Failed':
+            return 'bg-[#FFC9C9] text-[#A30000]';
+        case 'Canceled':
+            return 'bg-black text-white';
+        default:
+            return 'bg-[#E5E5E5]'
+    }
+}
+
 export function CLOSE_MODAL(modal: RefObject<HTMLDivElement>, state: boolean, modalSet: (bool: boolean) => void) {
     modal.current?.classList.add('-translate-y-full');
     setTimeout(() => {
@@ -69,11 +82,11 @@ export const GET_RISK_DAYS = (date: Date, risk: string, environment: string, sta
     const diffInDays = DATE_DIFFERENCE(date);
 
     if (environment === 'PROD' && status === 'New') {
-        if (diffInDays < 5 && (risk === 'High' || risk === 'Very High')) {
+        if (diffInDays < 7 && (risk === 'High' || risk === 'Very High')) {
             return '5 business days';
-        } else if (diffInDays < 3 && risk === 'Moderate') {
+        } else if (diffInDays < 5 && risk === 'Moderate') {
             return '3 business days';
-        } else if (diffInDays <= 1 && risk === 'Low') {
+        } else if (diffInDays <= 3 && risk === 'Low') {
             return '1 business day';
         } else return false;
     }
@@ -112,14 +125,18 @@ export const GET_STATE_NAMES = (text: string) => {
     }
 }
 
-export const GET_RISK_NAMES = (text: string) => {
-    switch (text) {
-        case 'Low':
-            return 'bg-[#CDECB5] text-[#2D7813]';
-        case 'Moderate': 
-            return 'bg-[#EEDB77] text-[#825E03]';
-        default:
-            return 'bg-[#ECB5B5] text-[#781313]'
+export const GET_RISK_NAMES = (text: string, status: string) => {
+    if (status === 'Implementation Complete' || status === 'Implementation Failed' || status === 'Canceled') {
+        return 'bg-inherit text-inherit'
+    } else {
+        switch (text) {
+            case 'Low':
+                return 'bg-[#CDECB5] text-[#2D7813]';
+            case 'Moderate': 
+                return 'bg-[#EEDB77] text-[#825E03]';
+            default:
+                return 'bg-[#ECB5B5] text-[#781313]'
+        }
     }
 }
 
