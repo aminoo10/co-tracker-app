@@ -140,6 +140,29 @@ export const GET_RISK_NAMES = (text: string, status: string) => {
     }
 }
 
+export const TRANSLATE_BUTTON_NAME_TO_PROPERTY = (text: string) => {
+    switch(text) {
+        case 'MAL Code':
+            return 'malcode';
+        case 'Environment':
+            return 'environment';
+        case 'Risk':
+            return 'risk';
+        case 'Description':
+            return 'description';
+        case 'MES Provided?':
+            return 'mesProvided';
+        case 'CO State':
+            return 'status';
+        case 'Start Time':
+            return 'start';
+        case 'End Time':
+            return 'end'
+        default: 
+            return 'chg'
+    }
+}
+
    
 
 // export function CLOSE_MODAL(modal: RefObject<HTMLDivElement>, state: boolean, close: () => void) {

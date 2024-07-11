@@ -2,6 +2,7 @@
 import ChangeOrderList from "./components/ChangeOrderList"
 import ChangeOrderModal from "./components/ChangeOrderModal"
 import {ChangeOrder} from './ChangeOrder';
+import {SortObject} from './SortObject';
 import React, {useState} from 'react';
 import './globals.css'
 
@@ -21,10 +22,32 @@ const testInstance: ChangeOrder = {
   notes: 'these are my fucking notes!!!!'
 }
 
-
 export default function Home() {
 
   const [changeOrders, setChangeOrders] = useState<ChangeOrder[]>([testInstance]);
+
+  const [sortState, setSortState] = useState<SortObject>(new SortObject('chg', true));
+
+  const sortBy = (COs: ChangeOrder[], sort: keyof ChangeOrder) => {
+    const newSortDirection = (sort === sortState.sortType) ? !sortState.sortDirection : true;
+    setSortState(new SortObject(sort, newSortDirection));
+    
+    COs.sort((a,b) => {
+
+      //todo: implement for asc and desc logic
+      if (typeof sort === 'string') {
+        return (a[sort] as string).localeCompare((b[sort] as string));
+      } else if (typeof sort === 'boolean') {
+        return Number(a[sort]) - Number(b[sort]);
+      } else if (Object.prototype.toString.call(sort) === '[object Date]') {
+        return (a[sort] as Date).getTime() - (b[sort] as Date).getTime();
+      } else return 0;
+    })
+
+    return COs;
+
+  }
+
 
 
   const handleSaveFormData = (formData: ChangeOrder) => {
@@ -113,6 +136,7 @@ export default function Home() {
       getCHGObject={getCHGObject}
       changeStatus={changeStatus}
       changeMESProvided={changeMESProvided}
+      sortList={sortBy}
       />
     </div>
   )

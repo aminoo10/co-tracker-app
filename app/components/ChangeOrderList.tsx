@@ -6,7 +6,8 @@ import {GET_STATE_NAMES,
   GET_RISK_NAMES, 
   GET_RISK_DAYS, 
   DATE_DIFFERENCE, 
-  DETERMINE_CO_BG} from "../constants";
+  DETERMINE_CO_BG, 
+  TRANSLATE_BUTTON_NAME_TO_PROPERTY} from "../constants";
 
 
  interface COListProps {
@@ -16,13 +17,14 @@ import {GET_STATE_NAMES,
   getCHGObject: (CHG: string) => ChangeOrder;
   changeStatus: (CHG: string, direction: string) => void;
   changeMESProvided: (CHG: string) => void;
+  sortList: (COs: ChangeOrder[], sort: keyof ChangeOrder) => ChangeOrder[];
  } 
 
 
 
 const changeOrderStyle = `changeOrder grid grid-cols-11 gap-1 items-center justify-center text-center ml-2`;
 
-export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit, changeStatus, changeMESProvided}: COListProps) {
+export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit, changeStatus, changeMESProvided, sortList}: COListProps) {
 
   const [deleteModalState, setDeleteModalState] = useState(false);
   const [editModalState, setEditModalState] = useState(false);
@@ -66,6 +68,11 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
   const handleNextStatus = (e: React.MouseEvent<HTMLButtonElement,  MouseEvent>) => {
     const chg = e.currentTarget.parentElement?.nextElementSibling?.nextElementSibling?.nextElementSibling?.innerHTML || ''; 
     changeStatus(chg, 'next');
+  }
+
+  const sortBy = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const sortName = e.currentTarget.innerHTML;
+    sortList(COList,TRANSLATE_BUTTON_NAME_TO_PROPERTY(sortName));
   }
 
 
