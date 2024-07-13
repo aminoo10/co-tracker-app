@@ -12,7 +12,7 @@ const statusOptions: string[] = ["New", "Technical Review", "Stakeholder Review"
 const testInstance: ChangeOrder = {
   malcode: 'FUCK',
   environment: 'PROD',
-  risk: 'Low',
+  risk: 'High',
   description: 'Stupid fucking bullshit',
   mesProvided: true,
   start: new Date(2024, 6, 2, 0, 0),
@@ -22,29 +22,49 @@ const testInstance: ChangeOrder = {
   notes: 'these are my fucking notes!!!!'
 }
 
+const testInstance2: ChangeOrder = {
+  malcode: 'SHIT',
+  environment: 'PAT',
+  risk: 'Low',
+  description: 'Dumb Idiot Piss',
+  mesProvided: true,
+  start: new Date(2024, 7, 8, 10, 0),
+  end: new Date(2024, 7, 13, 17, 30),
+  chg: 'CHG1276487',
+  status: 'New',
+  notes: 'THE SECOND ONE!!!!!!!'
+}
+
+
+
+
 export default function Home() {
 
-  const [changeOrders, setChangeOrders] = useState<ChangeOrder[]>([testInstance]);
-
+  const [changeOrders, setChangeOrders] = useState<ChangeOrder[]>([testInstance, testInstance2]);
   const [sortState, setSortState] = useState<SortObject>(new SortObject('chg', true));
 
   const sortBy = (COs: ChangeOrder[], sort: keyof ChangeOrder) => {
     const newSortDirection = (sort === sortState.sortType) ? !sortState.sortDirection : true;
     setSortState(new SortObject(sort, newSortDirection));
+    // console.log(sortState);
+    // console.log(sort);
     
     COs.sort((a,b) => {
 
-      //todo: implement for asc and desc logic
-      if (typeof sort === 'string') {
-        return (a[sort] as string).localeCompare((b[sort] as string));
-      } else if (typeof sort === 'boolean') {
-        return Number(a[sort]) - Number(b[sort]);
-      } else if (Object.prototype.toString.call(sort) === '[object Date]') {
-        return (a[sort] as Date).getTime() - (b[sort] as Date).getTime();
+      //true for asc false for desc
+      if (typeof a[sort] === 'string') {
+        return (newSortDirection) ? (a[sort] as string).localeCompare((b[sort] as string))
+                               : (b[sort] as string).localeCompare((a[sort] as string));
+      } else if (typeof a[sort] === 'boolean') {
+        return (newSortDirection) ? Number(a[sort]) - Number(b[sort])
+                                  : Number(b[sort]) - Number(a[sort])
+      } else if (Object.prototype.toString.call(a[sort]) === '[object Date]') {
+        return (newSortDirection) ? (a[sort] as Date).getTime() - (b[sort] as Date).getTime()
+                                  : (b[sort] as Date).getTime() - (a[sort] as Date).getTime()
       } else return 0;
     })
 
-    return COs;
+    return sortState;
 
   }
 

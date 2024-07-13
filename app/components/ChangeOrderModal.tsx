@@ -151,8 +151,7 @@ export default function ChangeOrderModal({
 
 
   useEffect(() => {
-    console.log(coData);
-  }, [coData]);
+  }, []);
 
   return (
     <div>
