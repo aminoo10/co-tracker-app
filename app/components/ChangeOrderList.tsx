@@ -18,21 +18,21 @@ import {GET_STATE_NAMES,
   getCHGObject: (CHG: string) => ChangeOrder;
   changeStatus: (CHG: string, direction: string) => void;
   changeMESProvided: (CHG: string) => void;
-  sortList: (COs: ChangeOrder[], sort: keyof ChangeOrder) => SortObject;
+  sortList: (COs: ChangeOrder[], sort: keyof ChangeOrder) => void;
+  sortState: SortObject;
  } 
 
-const buttonClassNames = 'relative';
 const sortDirectionClassNames = 'size-6 w-6 absolute';
+const listColumns = ['MAL Code', 'Environment', 'Risk', 'Description', 'MES Provided?', 'CO State', 'Start Time', 'End Time', 'CHG#'];
 
 const changeOrderStyle = `changeOrder grid grid-cols-11 gap-1 items-center justify-center text-center ml-2`;
 
-export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit, changeStatus, changeMESProvided, sortList}: COListProps) {
+export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit, changeStatus, changeMESProvided, sortList, sortState}: COListProps) {
 
   const [deleteModalState, setDeleteModalState] = useState(false);
   const [editModalState, setEditModalState] = useState(false);
   const [selectedChg, setSelectedChg] = useState<string>('');
   const [chgToEdit, setChgToEdit] = useState<ChangeOrder | undefined>();
-  const [sortState, setSortState] = useState<SortObject>(new SortObject('chg', true));
 
   const openDeleteModal = (e: React.MouseEvent<HTMLButtonElement,  MouseEvent>) => {
     //uhh maybe figure out better way to do this, but it works!
@@ -75,12 +75,15 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
 
   const sortBy = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const sortName = e.currentTarget.textContent;
-    setSortState(sortList(COList,TRANSLATE_BUTTON_NAME_TO_PROPERTY(sortName as string)));
+    sortList(COList,TRANSLATE_BUTTON_NAME_TO_PROPERTY(sortName as string));
+    // console.log(sortState);
   }
 
 
   useEffect(() => {
-  }, []);
+    // setSortState(sortState);
+    // console.log(sortState);
+  }, [sortBy]);
 
 
   return (
@@ -94,126 +97,23 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
           <div id="table-header" className={`${changeOrderStyle}`}>
             {/* maybe figure out a way to dynamically create these elements. */}
 
-            <button onClick={sortBy} className={buttonClassNames}>
-              <p>MAL Code</p>
-              {sortState.sortType === 'malcode' && sortState.sortDirection
-              && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 right-0`}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-              </svg>}
+            {listColumns.map(column => {
 
-              {sortState.sortType === 'malcode' && !sortState.sortDirection
-              && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 left-0`}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-              </svg>}
-            </button>
+            return ( 
+              <button onClick={sortBy} className='relative'>
+                <p>{column}</p>
+                {sortState.sortType === TRANSLATE_BUTTON_NAME_TO_PROPERTY(column) && !sortState.sortDirection
+                && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 right-0`}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                </svg>}
 
-
-            <button onClick={sortBy} className={buttonClassNames}>
-              <p>Environment</p>
-              {sortState.sortType === 'environment' && sortState.sortDirection
-              && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 right-0`}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-              </svg>}
-
-              {sortState.sortType === 'environment' && !sortState.sortDirection
-              && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 left-0`}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-              </svg>}
+                {sortState.sortType === TRANSLATE_BUTTON_NAME_TO_PROPERTY(column) && sortState.sortDirection
+                && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 left-0`}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                </svg>}
               </button>
-              
-            <button onClick={sortBy} className={buttonClassNames}> 
-              <p>Risk</p>
-              {sortState.sortType === 'risk' && sortState.sortDirection
-              && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 right-0`}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-              </svg>}
 
-              {sortState.sortType === 'risk' && !sortState.sortDirection
-              && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 left-0`}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-              </svg>}
-            </button>
-
-            <button onClick={sortBy} className={buttonClassNames}>
-              <p>Description</p>
-              {sortState.sortType === 'description' && sortState.sortDirection
-              && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 right-0`}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-              </svg>}
-
-              {sortState.sortType === 'description' && !sortState.sortDirection
-              && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 left-0`}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-              </svg>}
-            </button>
-
-            <button onClick={sortBy} className={buttonClassNames}>
-              <p>MES Provided?</p>
-              {sortState.sortType === 'mesProvided' && sortState.sortDirection
-              && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 right-0`}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-              </svg>}
-
-              {sortState.sortType === 'mesProvided' && !sortState.sortDirection
-              && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 left-0`}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-              </svg>}
-            </button>
-
-            <button onClick={sortBy} className={buttonClassNames}>
-              <p>CO State</p>
-              {sortState.sortType === 'status' && sortState.sortDirection
-              && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 right-0`}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-              </svg>}
-
-              {sortState.sortType === 'status' && !sortState.sortDirection
-              && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 left-0`}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-              </svg>}
-            </button>
-
-            <button onClick={sortBy} className={buttonClassNames}>
-              <p>Start Time</p>
-              {sortState.sortType === 'start' && sortState.sortDirection
-              && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 right-0`}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-              </svg>}
-
-              {sortState.sortType === 'start' && !sortState.sortDirection
-              && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 left-0`}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-              </svg>}
-            </button>
-            
-            <button onClick={sortBy} className={buttonClassNames}>
-              <p>End Time</p>
-              {sortState.sortType === 'end' && sortState.sortDirection
-              && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 right-0`}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-              </svg>}
-
-              {sortState.sortType === 'end' && !sortState.sortDirection
-              && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 left-0`}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-              </svg>}
-            </button>
-
-            <div>
-              <button onClick={sortBy} className={buttonClassNames}>
-                <p>CHG#</p>
-                {sortState.sortType === 'chg' && sortState.sortDirection
-              && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 right-0`}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-              </svg>}
-
-              {sortState.sortType === 'chg' && !sortState.sortDirection
-              && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 left-0`}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-              </svg>}
-              </button>
-            </div>
-                
+            )})}                
             <p>Notes</p>
           </div>
         </div>

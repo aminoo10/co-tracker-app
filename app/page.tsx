@@ -3,7 +3,7 @@ import ChangeOrderList from "./components/ChangeOrderList"
 import ChangeOrderModal from "./components/ChangeOrderModal"
 import {ChangeOrder} from './ChangeOrder';
 import {SortObject} from './SortObject';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './globals.css'
 
 
@@ -46,7 +46,6 @@ export default function Home() {
   const sortBy = (COs: ChangeOrder[], sort: keyof ChangeOrder) => {
     const newSortDirection = (sort === sortState.sortType) ? !sortState.sortDirection : true;
     setSortState(new SortObject(sort, newSortDirection));
-    // console.log(sortState);
     // console.log(sort);
     
     COs.sort((a,b) => {
@@ -63,8 +62,6 @@ export default function Home() {
                                   : (b[sort] as Date).getTime() - (a[sort] as Date).getTime()
       } else return 0;
     })
-
-    return sortState;
 
   }
 
@@ -146,6 +143,13 @@ export default function Home() {
 
   }
 
+  useEffect(() => {
+    console.log(sortState);
+  }, [sortState]);
+
+
+  
+
   return (
     <div id='app'>
       <ChangeOrderModal onSave={handleSaveFormData} checkUnique={checkForUniqueCHG} />
@@ -157,6 +161,7 @@ export default function Home() {
       changeStatus={changeStatus}
       changeMESProvided={changeMESProvided}
       sortList={sortBy}
+      sortState={sortState}
       />
     </div>
   )
