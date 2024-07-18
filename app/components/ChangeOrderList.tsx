@@ -22,7 +22,6 @@ import {GET_STATE_NAMES,
   sortState: SortObject;
  } 
 
-const sortDirectionClassNames = 'size-6 w-6 absolute';
 const listColumns = ['MAL Code', 'Environment', 'Risk', 'Description', 'MES Provided?', 'CO State', 'Start Time', 'End Time', 'CHG#'];
 
 const changeOrderStyle = `changeOrder grid grid-cols-11 gap-1 items-center justify-center text-center ml-2`;
@@ -90,8 +89,6 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
       <div id="main">
         <ChangeOrderDeleteModal modalOpen={deleteModalState} onConfirm={confirmDelete} deleteChg={selectedChg}/>
         <ChangeOrderEditModal modalOpen={editModalState} close={closeEditModal} editChg={chgToEdit} onEdit={onEdit}/>
-        <h2 id="test">Change Orders:</h2>
-
         <div id='list-header'>
           <div id='display'></div>
           <div id="table-header" className={`${changeOrderStyle}`}>
@@ -103,12 +100,12 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
               <button onClick={sortBy} className='relative'>
                 <p>{column}</p>
                 {sortState.sortType === TRANSLATE_BUTTON_NAME_TO_PROPERTY(column) && !sortState.sortDirection
-                && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 right-0`}>
+                && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" strokeWidth={1.5} stroke="currentColor" className={`size-6 w-6 absolute bottom-0 right-0`}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                 </svg>}
 
                 {sortState.sortType === TRANSLATE_BUTTON_NAME_TO_PROPERTY(column) && sortState.sortDirection
-                && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`${sortDirectionClassNames} bottom-0 left-0`}>
+                && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`size-6 w-6 absolute bottom-0 left-0`}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
                 </svg>}
               </button>

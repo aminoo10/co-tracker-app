@@ -27,7 +27,7 @@ const testInstance2: ChangeOrder = {
   environment: 'PAT',
   risk: 'Low',
   description: 'Dumb Idiot Piss',
-  mesProvided: true,
+  mesProvided: false,
   start: new Date(2024, 7, 8, 10, 0),
   end: new Date(2024, 7, 13, 17, 30),
   chg: 'CHG1276487',
@@ -40,6 +40,7 @@ const testInstance2: ChangeOrder = {
 
 export default function Home() {
 
+  //the big list (always keep this around)
   const [changeOrders, setChangeOrders] = useState<ChangeOrder[]>([testInstance, testInstance2]);
   const [sortState, setSortState] = useState<SortObject>(new SortObject('chg', true));
 
@@ -143,6 +144,19 @@ export default function Home() {
 
   }
 
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value, type } = e.target;
+    let newValue: string | boolean | Date = value;
+
+
+
+  };
+
+
   useEffect(() => {
     console.log(sortState);
   }, [sortState]);
@@ -153,6 +167,30 @@ export default function Home() {
   return (
     <div id='app'>
       <ChangeOrderModal onSave={handleSaveFormData} checkUnique={checkForUniqueCHG} />
+
+      <div id='list-display' className="bg-[#D9D9D9] p-1 w-max">
+
+      <label htmlFor="display" className=''>
+              Display: 
+              <select
+                name="display"
+                id="display"
+                className='text-center ml-3'
+                onChange={handleChange}
+              >
+                <option value="all" defaultChecked>
+                  All
+                </option>
+                <option value="in-progress">
+                  In Progress
+                </option>
+                <option value="completed">
+                  Completed
+                </option>
+              </select>
+            </label>
+      </div>
+
       <ChangeOrderList 
       COList={changeOrders} 
       onDelete={handleDeleteFormData} 
