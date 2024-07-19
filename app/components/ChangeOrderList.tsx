@@ -82,7 +82,7 @@ export default function ChangeOrderList({COList, onDelete, getCHGObject, onEdit,
   useEffect(() => {
     // setSortState(sortState);
     // console.log(sortState);
-  }, [sortBy]);
+  }, [COList]);
 
 
   return (

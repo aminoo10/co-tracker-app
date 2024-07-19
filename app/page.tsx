@@ -18,7 +18,7 @@ const testInstance: ChangeOrder = {
   start: new Date(2024, 6, 2, 0, 0),
   end: new Date(2024, 6, 2, 7, 0),
   chg: 'CHG1276486',
-  status: 'Implement',
+  status: 'Implementation Complete',
   notes: 'these are my fucking notes!!!!'
 }
 
@@ -35,19 +35,20 @@ const testInstance2: ChangeOrder = {
   notes: 'THE SECOND ONE!!!!!!!'
 }
 
+let COList: ChangeOrder[] = [testInstance, testInstance2]; //the master list
+
 
 
 
 export default function Home() {
 
   //the big list (always keep this around)
-  const [changeOrders, setChangeOrders] = useState<ChangeOrder[]>([testInstance, testInstance2]);
+  const [changeOrders, setChangeOrders] = useState<ChangeOrder[]>(COList);
   const [sortState, setSortState] = useState<SortObject>(new SortObject('chg', true));
 
   const sortBy = (COs: ChangeOrder[], sort: keyof ChangeOrder) => {
     const newSortDirection = (sort === sortState.sortType) ? !sortState.sortDirection : true;
     setSortState(new SortObject(sort, newSortDirection));
-    // console.log(sort);
     
     COs.sort((a,b) => {
 
@@ -69,19 +70,23 @@ export default function Home() {
 
 
   const handleSaveFormData = (formData: ChangeOrder) => {
-    //changeOrders.push(formData);
-    setChangeOrders(prevArray => [...prevArray, formData]);
+    COList.push(formData);
+    setChangeOrders(prevArray => [...prevArray]);
   };
 
   //delete will pass through the CHG (which is a unique identifier) of the object that is to be deleted, 
   //it will then use filter to basically create a new array from the filtered current array, which then overwrites
   //the current array.
   const handleDeleteFormData = (CHG: string) => {
-    let newArray = changeOrders.filter(obj => {
+    let newArray = COList.filter(obj => {
       return obj.chg !== CHG;
     })
-    setChangeOrders(newArray);
-    console.log(newArray);
+    setChangeOrders(prevArray => {
+      return prevArray.filter(obj => {
+        return obj.chg !== CHG;
+      })
+    });
+    COList = newArray;
   }
 
   const getCHGObject = (CHG: string): ChangeOrder => {
@@ -90,10 +95,19 @@ export default function Home() {
       throw new Error(`No ChangeOrder found with CHG: ${CHG}`)
     } 
     return found;
-    
   }
 
   const handleEditFormData = (formData: ChangeOrder) => {
+
+    const newList: ChangeOrder[] = COList.map(co => {
+      if (co.chg === formData.chg) {
+        co = formData;
+      }
+      return co;
+    })
+    COList = newList;
+    
+    //i dont really like doing it like this where I am sorting it tiwce, maybe figure out a better implementation down the line...
     setChangeOrders(prevArray => {
       return prevArray.map(co => {
         if (co.chg === formData.chg) {
@@ -102,9 +116,21 @@ export default function Home() {
         return co;
       });
     });
+
   }
 
   const changeStatus = (CHG: string, direction: string) => {
+
+    const index = COList.findIndex(changeOrder => changeOrder.chg === CHG);
+
+    const updatedChangeOrder = {
+      ...COList[index],
+      status: direction === 'prev' ? statusOptions[(statusOptions.indexOf(COList[index].status) - 1 + statusOptions.length) % statusOptions.length]
+                                   : statusOptions[(statusOptions.indexOf(COList[index].status) + 1) % statusOptions.length], 
+    };
+    
+    COList = (index === -1) ? COList : [...COList.slice(0,index), updatedChangeOrder, ...COList.slice(index + 1)];
+
 
     setChangeOrders((prevChangeOrders) => {
       const index = prevChangeOrders.findIndex((changeOrder) => changeOrder.chg === CHG);
@@ -140,7 +166,7 @@ export default function Home() {
 
   const checkForUniqueCHG = (CHG : string): boolean => {
     
-    return changeOrders.some((CO: ChangeOrder) => CO.chg === CHG)    
+    return COList.some((CO: ChangeOrder) => CO.chg === CHG)    
 
   }
 
@@ -149,17 +175,28 @@ export default function Home() {
       HTMLInputElement | HTMLSelectElement
     >
   ) => {
-    const { name, value, type } = e.target;
-    let newValue: string | boolean | Date = value;
+    const { value } = e.target;
 
-
-
+    if (value === 'all') {
+      setChangeOrders(COList);
+    } else if (value === 'in-progress') {
+      setChangeOrders(COList.filter(obj => {
+        return obj.status !== 'Implementation Complete' 
+                            && obj.status !== 'Implementation Failed'  
+                            && obj.status !== 'Canceled'
+      }))
+    } else {
+      setChangeOrders(COList.filter(obj => {
+        return obj.status === 'Implementation Complete' 
+                            || obj.status === 'Implementation Failed'
+                            || obj.status === 'Canceled'
+      }))
+    }
   };
 
 
   useEffect(() => {
-    console.log(sortState);
-  }, [sortState]);
+  }, [COList, handleChange]);
 
 
   
