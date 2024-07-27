@@ -10,15 +10,13 @@ import {
   OPEN_MODAL,
   CLOSE_MODAL,
   FORMATTED_DATE,
-  DATE_TO_FORMATTED_STRING
+  DATE_TO_FORMATTED_STRING,
 } from "../constants";
 
-
 interface ChangeOrderModalProps {
-  checkUnique: (CHG : string) => boolean;
-  onSave: (coData : ChangeOrder) => void;
+  checkUnique: (CHG: string) => boolean;
+  onSave: (coData: ChangeOrder) => void;
 }
-
 
 export default function ChangeOrderModal({
   checkUnique,
@@ -26,10 +24,9 @@ export default function ChangeOrderModal({
 }: ChangeOrderModalProps) {
   const modal = useRef<HTMLDivElement>(null);
 
-  const chgElement = document.getElementById('chg') as HTMLInputElement  
-  const startTime =  document.getElementById('start') as HTMLSelectElement
-  const endTime =  document.getElementById('end') as HTMLSelectElement
-
+  const chgElement = document.getElementById("chg") as HTMLInputElement;
+  const startTime = document.getElementById("start") as HTMLSelectElement;
+  const endTime = document.getElementById("end") as HTMLSelectElement;
 
   const [modalOpen, setModalOpen] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(true);
@@ -49,10 +46,10 @@ export default function ChangeOrderModal({
   });
 
   const removeRoseBorder = () => {
-    endTime.classList.remove('border-rose-500');
-    startTime.classList.remove('border-rose-500');
-    chgElement.classList.remove('border-rose-500');
-  }
+    endTime.classList.remove("border-rose-500");
+    startTime.classList.remove("border-rose-500");
+    chgElement.classList.remove("border-rose-500");
+  };
 
   const initializeCO = () => {
     setCoData({
@@ -67,13 +64,10 @@ export default function ChangeOrderModal({
       status: "New",
       notes: "",
     });
-  }
-
+  };
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value, type } = e.target;
     let newValue: string | boolean | Date = value;
@@ -93,41 +87,47 @@ export default function ChangeOrderModal({
   const handleSave = () => {
     //check if required fields are filled in
 
-    if (!coData.chg || !coData.start || isNaN(coData.start.getTime()) || !coData.end || isNaN(coData.end.getTime())) {
-      modal.current?.classList.add('animate-quake'); //i want this to animate quake everytime you press the button >:(
+    if (
+      !coData.chg ||
+      !coData.start ||
+      isNaN(coData.start.getTime()) ||
+      !coData.end ||
+      isNaN(coData.end.getTime())
+    ) {
+      modal.current?.classList.add("animate-quake"); //i want this to animate quake everytime you press the button >:(
       setSubmissionSuccess(false);
       setDuplicateCHG(false);
 
       if (!coData?.chg) {
-        chgElement.classList.add('border-rose-500');
-      } else chgElement.classList.remove('border-rose-500');
+        chgElement.classList.add("border-rose-500");
+      } else chgElement.classList.remove("border-rose-500");
 
       if (!coData?.start || isNaN(coData?.start.getTime())) {
-        startTime.classList.add('border-rose-500');
-      } else startTime.classList.remove('border-rose-500');
+        startTime.classList.add("border-rose-500");
+      } else startTime.classList.remove("border-rose-500");
 
       if (!coData?.end || isNaN(coData?.end.getTime())) {
-        endTime.classList.add('border-rose-500');
-      } else endTime.classList.remove('border-rose-500');
+        endTime.classList.add("border-rose-500");
+      } else endTime.classList.remove("border-rose-500");
 
-      setTimeout(() => modal.current?.classList.remove('animate-quake'), 550); //nvm this does it :)
+      setTimeout(() => modal.current?.classList.remove("animate-quake"), 550); //nvm this does it :)
 
       return;
     }
 
     if (checkUnique(coData.chg)) {
-      modal.current?.classList.add('animate-quake');
+      modal.current?.classList.add("animate-quake");
       setDuplicateCHG(true);
       setSubmissionSuccess(true);
-      setCoData(prevCoData => ({
+      setCoData((prevCoData) => ({
         ...prevCoData,
         chg: "",
       }));
 
-      setTimeout(() => modal.current?.classList.remove('animate-quake'), 550);
+      setTimeout(() => modal.current?.classList.remove("animate-quake"), 550);
 
       return;
-    } 
+    }
 
     onSave(coData);
     initializeCO();
@@ -147,11 +147,9 @@ export default function ChangeOrderModal({
     setDuplicateCHG(false);
     removeRoseBorder();
     CLOSE_MODAL(modal, modalOpen, setModalOpen);
-  } 
+  };
 
-
-  useEffect(() => {
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div>
@@ -175,10 +173,14 @@ export default function ChangeOrderModal({
         <div ref={modal} className={MODAL_STYLE}>
           {/* header */}
           {submissionSuccess ? null : (
-            <div className="mx-4 my-3 text-red-500">Please fill in the required fields.</div>
+            <div className="mx-4 my-3 text-red-500">
+              Please fill in the required fields.
+            </div>
           )}
           {!duplicateCHG ? null : (
-            <div className="mx-4 my-3 text-red-500">That CHG already exists, please use a different CHG#.</div>
+            <div className="mx-4 my-3 text-red-500">
+              That CHG already exists, please use a different CHG#.
+            </div>
           )}
 
           <div className="px-4 py-3 border-b border-gray-200 flex justify-between items-center">

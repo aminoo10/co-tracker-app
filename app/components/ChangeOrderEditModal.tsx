@@ -15,7 +15,7 @@ import {
 interface ChangeOrderEditModalProps {
   modalOpen: boolean;
   close: () => void;
-  onEdit: (coData : ChangeOrder) => void;
+  onEdit: (coData: ChangeOrder) => void;
   editChg: ChangeOrder | undefined;
 }
 
@@ -27,16 +27,15 @@ export default function ChangeOrderEditModal({
 }: ChangeOrderEditModalProps) {
   const editModal = useRef<HTMLDivElement>(null);
 
-  const startTime =  document.getElementById('start-edit') as HTMLSelectElement
-  const endTime =  document.getElementById('end-edit') as HTMLSelectElement
+  const startTime = document.getElementById("start-edit") as HTMLSelectElement;
+  const endTime = document.getElementById("end-edit") as HTMLSelectElement;
 
   const [modalState, setModalState] = useState(modalOpen);
   const [submissionSuccess, setSubmissionSuccess] = useState(true);
 
-
   const [coData, setCoData] = useState<ChangeOrder | undefined>({
     malcode: editChg?.malcode as string,
-    environment: editChg?.environment as 'PROD' | 'PAT',
+    environment: editChg?.environment as "PROD" | "PAT",
     risk: editChg?.risk as "Low" | "Moderate" | "High" | "Very High",
     description: editChg?.description as string,
     mesProvided: editChg?.mesProvided as boolean,
@@ -47,7 +46,6 @@ export default function ChangeOrderEditModal({
     notes: editChg?.notes as string,
   });
 
-
   const closeModal = () => {
     setCoData(undefined);
     setSubmissionSuccess(true);
@@ -56,11 +54,9 @@ export default function ChangeOrderEditModal({
   };
 
   const removeRoseBorder = () => {
-    endTime.classList.remove('border-rose-500');
-    startTime.classList.remove('border-rose-500');
-  }
-
-
+    endTime.classList.remove("border-rose-500");
+    startTime.classList.remove("border-rose-500");
+  };
 
   useEffect(() => {
     setModalState(modalOpen);
@@ -68,11 +64,10 @@ export default function ChangeOrderEditModal({
     else close();
 
     if (editChg) setCoData(editChg);
-    
+
     // const checkboxElement = document.getElementById('mesProvided') as HTMLSelectElement
     // console.log(checkboxElement.value);
-}, [modalOpen, editChg]);
-
+  }, [modalOpen, editChg]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -85,8 +80,7 @@ export default function ChangeOrderEditModal({
     if (type === "checkbox") {
       newValue = (e.target as HTMLInputElement).checked;
       console.log(newValue);
-    } 
-    else if (type === "datetime-local") newValue = new Date(value);
+    } else if (type === "datetime-local") newValue = new Date(value);
     else if (type === "textarea") newValue = value;
 
     setCoData((prevCoData) => ({
@@ -96,22 +90,27 @@ export default function ChangeOrderEditModal({
   };
 
   const handleEdit = () => {
-
-
-    if (!coData?.start || isNaN(coData?.start.getTime()) || !coData?.end || isNaN(coData?.end.getTime())) {
-      editModal.current?.classList.add('animate-quake');
+    if (
+      !coData?.start ||
+      isNaN(coData?.start.getTime()) ||
+      !coData?.end ||
+      isNaN(coData?.end.getTime())
+    ) {
+      editModal.current?.classList.add("animate-quake");
       setSubmissionSuccess(false);
 
       if (!coData?.start || isNaN(coData?.start.getTime())) {
-        startTime.classList.add('border-rose-500');
-      }else startTime.classList.remove('border-rose-500');
+        startTime.classList.add("border-rose-500");
+      } else startTime.classList.remove("border-rose-500");
 
       if (!coData?.end || isNaN(coData?.end.getTime())) {
-        endTime.classList.add('border-rose-500');
-      } else endTime.classList.remove('border-rose-500');
+        endTime.classList.add("border-rose-500");
+      } else endTime.classList.remove("border-rose-500");
 
-
-      setTimeout(() => editModal.current?.classList.remove('animate-quake'), 550);
+      setTimeout(
+        () => editModal.current?.classList.remove("animate-quake"),
+        550
+      );
 
       return;
     }
@@ -137,7 +136,9 @@ export default function ChangeOrderEditModal({
           {/* header */}
 
           {submissionSuccess ? null : (
-            <div className="mx-4 my-3 text-red-500">Please fill in the required fields.</div>
+            <div className="mx-4 my-3 text-red-500">
+              Please fill in the required fields.
+            </div>
           )}
 
           <div className="px-4 py-3 border-b border-gray-200">
@@ -170,10 +171,10 @@ export default function ChangeOrderEditModal({
 
             <label htmlFor="risk" className={LABEL_STYLE}>
               Risk
-              <select 
-                name="risk" 
-                id="risk" 
-                className={INPUT_STYLE} 
+              <select
+                name="risk"
+                id="risk"
+                className={INPUT_STYLE}
                 value={coData?.risk || ""} //IT FUCKING WORKS!!!!!?!!!
                 onChange={handleChange}
               >
@@ -209,7 +210,6 @@ export default function ChangeOrderEditModal({
                 className={INPUT_STYLE}
                 value={coData?.description}
                 onChange={handleChange}
-
               />
             </label>
 
@@ -223,7 +223,6 @@ export default function ChangeOrderEditModal({
                 placeholder="Start time"
                 value={DATE_TO_FORMATTED_STRING(coData?.start || new Date())} //make method that converts date into string.
                 onChange={handleChange}
-
               />
             </label>
 
@@ -237,7 +236,6 @@ export default function ChangeOrderEditModal({
                 placeholder="End time"
                 value={DATE_TO_FORMATTED_STRING(coData?.end || new Date())}
                 onChange={handleChange}
-
               />
             </label>
 
@@ -252,7 +250,6 @@ export default function ChangeOrderEditModal({
                 disabled
                 defaultValue={coData?.chg}
                 onChange={handleChange}
-
               />
             </label>
 
@@ -264,9 +261,8 @@ export default function ChangeOrderEditModal({
                 id="mesProvided"
                 className="w-4 h-4 mt-2 ml-2 text-blue-600 bg-gray-100 border-gray-300 
                  rounded focus:ring-blue-500 focus:ring-2"
-                 checked={coData?.mesProvided}
-                 onChange={handleChange}
- 
+                checked={coData?.mesProvided}
+                onChange={handleChange}
               />
             </label>
 
@@ -278,9 +274,8 @@ export default function ChangeOrderEditModal({
               placeholder="Write any notes or comments for this change here..."
               rows={4}
               className="block p-2.5 shadow appearance-none border rounded-lg w-full text-gray-700 focus:outline-none focus:shadow-outline focus:ring-2 font-normal resize"
-              value={coData?.notes || ''}
+              value={coData?.notes || ""}
               onChange={handleChange}
-
             />
           </div>
 
