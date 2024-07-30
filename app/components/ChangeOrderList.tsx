@@ -47,6 +47,7 @@ export default function ChangeOrderList({
   sortList,
   sortState,
 }: COListProps) {
+  const [COState, setCOState] = useState<ChangeOrder[]>(COList);
   const [deleteModalState, setDeleteModalState] = useState(false);
   const [editModalState, setEditModalState] = useState(false);
   const [selectedChg, setSelectedChg] = useState<string>("");
@@ -113,13 +114,12 @@ export default function ChangeOrderList({
 
   const sortBy = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const sortName = e.currentTarget.textContent;
-    sortList(COList, TRANSLATE_BUTTON_NAME_TO_PROPERTY(sortName as string));
+    sortList(COState, TRANSLATE_BUTTON_NAME_TO_PROPERTY(sortName as string));
     // console.log(sortState);
   };
 
   useEffect(() => {
-    // setSortState(sortState);
-    // console.log(sortState);
+    setCOState(COList)
   }, [COList]);
 
   return (
@@ -186,8 +186,12 @@ export default function ChangeOrderList({
 
         <p className="text-left">Notes</p>
       </div>
-      <div className="border-solid rounded-md border-4 border-[#ABCEA1] min-h-85v mb-5">
-        {COList.map((changeOrder) => {
+      <div className={` ${(!COList.length ? 'flex items-center justify-center' : '')} border-solid rounded-md border-4 border-[#ABCEA1] min-h-85v mb-5`}>
+        {!COList.length && <div className="text-center">
+        <p className="text-7xl">No Entries <br/>;(</p>
+        <p className="text-slate-500 mt-12">Click the green plus button in the top left to create a new entry!</p>
+        </div>}
+        {COState.map((changeOrder) => {
           return (
             <div
               className={`${DETERMINE_CO_BG(

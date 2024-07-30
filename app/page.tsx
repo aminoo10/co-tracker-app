@@ -44,14 +44,16 @@ const testInstance2: ChangeOrder = {
   notes: "THE SECOND ONE!!!!!!!",
 };
 
-let COList: ChangeOrder[] = [testInstance, testInstance2]; //the master list
+let COList: ChangeOrder[] = []; //the master list
 
 export default function Home() {
   //the big list (always keep this around)
+
   const [changeOrders, setChangeOrders] = useState<ChangeOrder[]>(COList);
   const [sortState, setSortState] = useState<SortObject>(
     new SortObject("chg", true)
   );
+
   const [displayState, setDisplayState] = useState<string>("all");
 
   const sortBy = (COs: ChangeOrder[], sort: keyof ChangeOrder) => {
@@ -248,8 +250,12 @@ export default function Home() {
   };
 
   useEffect(() => {
-    console.log(displayState);
-  }, [COList, handleChange]);
+    // if (typeof window !== 'undefined') {
+    //   localStorage.setItem('COList', JSON.stringify(COList));
+    // }
+    // console.log(localStorage.getItem('COList'));
+  }, [COList, changeOrders]);
+
 
   return (
     <div id="app">
