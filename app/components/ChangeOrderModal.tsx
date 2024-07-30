@@ -6,7 +6,6 @@ import {
   LABEL_STYLE,
   INPUT_STYLE,
   ENVIRONMENT_OPTIONS,
-  RISK_OPTIONS,
   OPEN_MODAL,
   CLOSE_MODAL,
   FORMATTED_DATE,
@@ -238,11 +237,18 @@ export default function ChangeOrderModal({
                 <option value="" disabled>
                   Choose an option
                 </option>
-                {RISK_OPTIONS.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
+                <option value="Low">
+                  Low
+                </option>
+                <option value="Moderate" disabled={coData.environment === 'PAT'}>
+                  Moderate
+                </option>
+                <option value="High" disabled={coData.environment === 'PAT'}>
+                  High
+                </option>
+                <option value="Very High" disabled={coData.environment === 'PAT'}>
+                  Very High
+                </option>
               </select>
             </label>
 

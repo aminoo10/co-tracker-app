@@ -10,7 +10,7 @@ export const INPUT_STYLE = 'mt-2 shadow appearance-none border rounded ml-2 py-2
 
 export const ENVIRONMENT_OPTIONS = ['PROD', 'PAT'];
 
-export const RISK_OPTIONS = ['Low', 'Moderate', 'High', 'Very High'];
+// export const RISK_OPTIONS = ['Low', 'Moderate', 'High', 'Very High'];
 
 
 export const OPEN_MODAL = (modal : RefObject<HTMLDivElement>) => {
