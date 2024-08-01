@@ -72,7 +72,14 @@ export const DATE_TO_FORMATTED_STRING = (date : Date) => {
 }
 
 export const DATE_DIFFERENCE = (date: Date) =>  {
-    const timeDiff = date.getTime() - FORMATTED_DATE().getTime();
+
+    const parsedDate = date instanceof Date ? date: new Date(date);
+
+    if (isNaN(parsedDate.getTime())) {
+        throw new Error("Invalid date");
+    }
+
+    const timeDiff = parsedDate.getTime() - FORMATTED_DATE().getTime();
     const diffInDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
     return diffInDays;

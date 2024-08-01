@@ -18,37 +18,38 @@ const statusOptions: string[] = [
   "Canceled",
 ];
 
-const testInstance: ChangeOrder = {
-  malcode: "FUCK",
-  environment: "PROD",
-  risk: "High",
-  description: "Stupid fucking bullshit",
-  mesProvided: true,
-  start: new Date(2024, 6, 2, 0, 0),
-  end: new Date(2024, 6, 2, 7, 0),
-  chg: "CHG1276486",
-  status: "Implementation Complete",
-  notes: "these are my fucking notes!!!!",
-};
+// const testInstance: ChangeOrder = {
+//   malcode: "FUCK",
+//   environment: "PROD",
+//   risk: "High",
+//   description: "Stupid fucking bullshit",
+//   mesProvided: true,
+//   start: new Date(2024, 6, 2, 0, 0),
+//   end: new Date(2024, 6, 2, 7, 0),
+//   chg: "CHG1276486",
+//   status: "Implementation Complete",
+//   notes: "these are my fucking notes!!!!",
+// };
 
-const testInstance2: ChangeOrder = {
-  malcode: "SHIT",
-  environment: "PAT",
-  risk: "Low",
-  description: "Dumb Idiot Piss",
-  mesProvided: false,
-  start: new Date(2024, 7, 8, 10, 0),
-  end: new Date(2024, 7, 13, 17, 30),
-  chg: "CHG1276487",
-  status: "New",
-  notes: "THE SECOND ONE!!!!!!!",
-};
+// const testInstance2: ChangeOrder = {
+//   malcode: "SHIT",
+//   environment: "PAT",
+//   risk: "Low",
+//   description: "Dumb Idiot Piss",
+//   mesProvided: false,
+//   start: new Date(2024, 7, 8, 10, 0),
+//   end: new Date(2024, 7, 13, 17, 30),
+//   chg: "CHG1276487",
+//   status: "New",
+//   notes: "THE SECOND ONE!!!!!!!",
+// };
 
 let COList: ChangeOrder[] = []; //the master list
 
 export default function Home() {
   //the big list (always keep this around)
 
+  
   const [changeOrders, setChangeOrders] = useState<ChangeOrder[]>(COList);
   const [sortState, setSortState] = useState<SortObject>(
     new SortObject("chg", true)
@@ -82,6 +83,7 @@ export default function Home() {
   const handleSaveFormData = (formData: ChangeOrder) => {
     //update main list
     COList.push(formData);
+    localStorage.setItem("COList", JSON.stringify(COList));
 
     //update display list
     setChangeOrders((prevArray) => [...prevArray]);
@@ -105,6 +107,7 @@ export default function Home() {
       });
     });
     COList = newArray;
+    localStorage.setItem("COList", JSON.stringify(COList));
   };
 
   const getCHGObject = (CHG: string): ChangeOrder => {
@@ -124,7 +127,7 @@ export default function Home() {
       return co;
     });
     COList = newList;
-
+    localStorage.setItem("COList", JSON.stringify(COList));
     //i dont really like doing it like this where I am sorting it tiwce, maybe figure out a better implementation down the line...
 
     //update display list//
@@ -167,7 +170,10 @@ export default function Home() {
             updatedChangeOrder,
             ...COList.slice(index + 1),
           ];
+          
+    localStorage.setItem("COList", JSON.stringify(COList));
 
+    
     //update currently displayed list//
     setChangeOrders((prevChangeOrders) => {
       const index = prevChangeOrders.findIndex(
@@ -199,6 +205,7 @@ export default function Home() {
     });
   };
 
+  /* not using this method */
   const changeMESProvided = (CHG: string) => {
     setChangeOrders((prevArray) => {
       return prevArray.map((co) => {
@@ -217,14 +224,10 @@ export default function Home() {
     return COList.some((CO: ChangeOrder) => CO.chg === CHG);
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { value } = e.target;
-
-    if (value === "all") {
+  const applyDisplayFilter = (() => {
+    if (displayState === "all") {
       setChangeOrders(COList);
-    } else if (value === "in-progress") {
+    } else if (displayState === "in-progress") {
       setChangeOrders(
         COList.filter((obj) => {
           return (
@@ -246,15 +249,38 @@ export default function Home() {
       );
     }
 
+  })
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { value } = e.target;
     setDisplayState(value);
   };
 
   useEffect(() => {
-    // if (typeof window !== 'undefined') {
-    //   localStorage.setItem('COList', JSON.stringify(COList));
-    // }
-    // console.log(localStorage.getItem('COList'));
-  }, [COList, changeOrders]);
+    applyDisplayFilter();
+  }, [displayState]);
+
+  useEffect(() => {
+
+    const storedData = localStorage.getItem("COList");
+
+    if (storedData) {
+      COList = (JSON.parse(storedData));
+      setChangeOrders(COList);
+    } else {
+      localStorage.setItem("COList", JSON.stringify(COList));
+    }
+    
+  }, []);
+
+
+  useEffect(() => {
+    setChangeOrders(COList);
+    console.log(COList);
+  }, [COList]) 
+
 
 
   return (
