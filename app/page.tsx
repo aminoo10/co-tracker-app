@@ -268,10 +268,12 @@ export default function Home() {
 
     if (storedData) {
       COList = (JSON.parse(storedData));
+      console.log(storedData)
       setChangeOrders(COList);
     } else {
       localStorage.setItem("COList", JSON.stringify(COList));
     }
+
     
   }, []);
 

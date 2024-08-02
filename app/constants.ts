@@ -58,6 +58,8 @@ export const FORMATTED_DATE = () => {
 
 export const DATE_TO_FORMATTED_STRING = (date : Date) => {
 
+    if (typeof date === 'string') date = new Date(date);
+
     const year = date.getFullYear();
     const month = date.getMonth();
     const day = date.getDate();
@@ -69,7 +71,22 @@ export const DATE_TO_FORMATTED_STRING = (date : Date) => {
         .padStart(2, "0")}-${day.toString().padStart(2, "0")}T${hour
         .toString()
         .padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
+    
+
 }
+
+// export const FORMATTED_STRING_TO_DATE = (date: string) => {
+
+//     const formattedDate = new Intl.DateTimeFormat('en-US', {
+//         year: 'numeric',
+//         month: 'numeric',
+//         day: 'numeric',
+//         hour: 'numeric',
+//         minute: 'numeric',
+//         hour12: true,
+//     }).format(date);
+//     return formattedDate;
+// }
 
 export const DATE_DIFFERENCE = (date: Date) =>  {
 

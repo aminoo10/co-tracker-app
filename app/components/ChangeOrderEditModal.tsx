@@ -68,6 +68,10 @@ export default function ChangeOrderEditModal({
     // console.log(checkboxElement.value);
   }, [modalOpen, editChg]);
 
+  // useEffect(() => {
+  //   console.log(typeof editChg?.start);
+  // }, [editChg])
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -119,6 +123,7 @@ export default function ChangeOrderEditModal({
     setSubmissionSuccess(true);
     removeRoseBorder();
   };
+
 
   return (
     <div>

@@ -119,7 +119,10 @@ export default function ChangeOrderList({
   };
 
   useEffect(() => {
-    setCOState(COList)
+    for (let co of COList) {
+      console.log(typeof co.start);
+    }
+    setCOState(COList);
   }, [COList]);
 
   return (
@@ -285,7 +288,7 @@ export default function ChangeOrderList({
               </div>
 
               <p>
-                {changeOrder.start.toLocaleString([], {
+                {new Date(changeOrder.start).toLocaleString([], {
                   year: "numeric",
                   month: "numeric",
                   day: "numeric",
@@ -311,7 +314,7 @@ export default function ChangeOrderList({
                   <span className="tooltip-arrow-gray absolute right-16 -top-5"></span>
                 </div>
                 <p>
-                  {changeOrder.end.toLocaleString([], {
+                  {new Date(changeOrder.end).toLocaleString([], {
                     year: "numeric",
                     month: "numeric",
                     day: "numeric",
