@@ -23,7 +23,6 @@ export default function ChangeOrderDeleteModal({
   const handleConfirmDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { innerHTML } = e.currentTarget;
     const deleteResult = innerHTML === "Yes" ? true : false;
-    console.log(deleteResult);
     CLOSE_MODAL(deleteModal, modalState, setModalState);
     setTimeout(() => onConfirm(deleteResult), 300); //this shit aint doin a exit transition, so ill do it like this. WHATEVA :)
   };

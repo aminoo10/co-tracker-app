@@ -47,7 +47,7 @@ export default function ChangeOrderList({
   sortList,
   sortState,
 }: COListProps) {
-  const [COState, setCOState] = useState<ChangeOrder[]>(COList);
+  // const [COState, setCOState] = useState<ChangeOrder[]>(COList);
   const [deleteModalState, setDeleteModalState] = useState(false);
   const [editModalState, setEditModalState] = useState(false);
   const [selectedChg, setSelectedChg] = useState<string>("");
@@ -114,16 +114,12 @@ export default function ChangeOrderList({
 
   const sortBy = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const sortName = e.currentTarget.textContent;
-    sortList(COState, TRANSLATE_BUTTON_NAME_TO_PROPERTY(sortName as string));
+    sortList(COList, TRANSLATE_BUTTON_NAME_TO_PROPERTY(sortName as string));
     // console.log(sortState);
   };
 
   useEffect(() => {
-    for (let co of COList) {
-      console.log(typeof co.start);
-    }
-    setCOState(COList);
-  }, [COList]);
+  }, []);
 
   return (
     <div id="main">
@@ -194,7 +190,7 @@ export default function ChangeOrderList({
         <p className="text-7xl">No Entries <br/>;(</p>
         <p className="text-slate-500 mt-12">Click the green plus button in the top left to create a new entry!</p>
         </div>}
-        {COState.map((changeOrder) => {
+        {COList.map((changeOrder) => {
           return (
             <div
               className={`${DETERMINE_CO_BG(
@@ -246,18 +242,18 @@ export default function ChangeOrderList({
               <p>{changeOrder.mesProvided ? "Yes" : "No"}</p>
 
               <div id="status" className={`flex justify-between h-full w-full`}>
-                <button onClick={handlePrevStatus}>
+                <button onClick={handlePrevStatus} className="z-10">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
                     className="w-4 h-full hover:bg-[#00000020] hover:stroke-[#ffffff95]"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
                     />
                   </svg>
@@ -269,18 +265,18 @@ export default function ChangeOrderList({
                 >
                   {changeOrder.status}
                 </span>
-                <button onClick={handleNextStatus}>
+                <button onClick={handleNextStatus} className="z-10">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
                     className="w-4 h-full hover:bg-[#00000020] hover:stroke-[#ffffff95]"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
                     />
                   </svg>
@@ -348,9 +344,9 @@ export default function ChangeOrderList({
                       viewBox="0 0 24 24"
                     >
                       <path
-                        fill-rule="evenodd"
+                        fillRule="evenodd"
                         d="M14 4.182A4.136 4.136 0 0 1 16.9 3c1.087 0 2.13.425 2.899 1.182A4.01 4.01 0 0 1 21 7.037c0 1.068-.43 2.092-1.194 2.849L18.5 11.214l-5.8-5.71 1.287-1.31.012-.012Zm-2.717 2.763L6.186 12.13l2.175 2.141 5.063-5.218-2.141-2.108Zm-6.25 6.886-1.98 5.849a.992.992 0 0 0 .245 1.026 1.03 1.03 0 0 0 1.043.242L10.282 19l-5.25-5.168Zm6.954 4.01 5.096-5.186-2.218-2.183-5.063 5.218 2.185 2.15Z"
-                        clip-rule="evenodd"
+                        clipRule="evenodd"
                       />
                     </svg>
                   </button>
@@ -369,9 +365,9 @@ export default function ChangeOrderList({
                       viewBox="0 0 24 24"
                     >
                       <path
-                        fill-rule="evenodd"
+                        fillRule="evenodd"
                         d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                        clip-rule="evenodd"
+                        clipRule="evenodd"
                       />
                     </svg>
                   </button>

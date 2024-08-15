@@ -2,7 +2,7 @@ import { RefObject } from "react";
 
 export const MODAL_STYLE = `opacity-0 -translate-y-full scale-150 transform relative fixed w-11/12 md:max-w-md mx-auto rounded h-100 overflow-y-auto shadow-lg transition-opacity bg-white transition-transform duration-300`
 
-export const OVERLAY_STYLE = `z-10 absolute inset-0 bg-black bg-opacity-40 h-screen w-full flex justify-center items-start md:items-center pt-10 md:pt-0`
+export const OVERLAY_STYLE = `z-20 absolute inset-0 bg-black bg-opacity-40 h-screen w-full flex justify-center items-start md:items-center pt-10 md:pt-0`
 
 export const LABEL_STYLE = 'block text-gray-700 text-sm font-bold mb-5 flex-col justify-between';
 

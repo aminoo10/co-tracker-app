@@ -44,12 +44,11 @@ const statusOptions: string[] = [
 //   notes: "THE SECOND ONE!!!!!!!",
 // };
 
-let COList: ChangeOrder[] = []; //the master list
 
 export default function Home() {
   //the big list (always keep this around)
 
-  
+  const [COList, setCOList] = useState<ChangeOrder[]>([]);
   const [changeOrders, setChangeOrders] = useState<ChangeOrder[]>(COList);
   const [sortState, setSortState] = useState<SortObject>(
     new SortObject("chg", true)
@@ -82,11 +81,12 @@ export default function Home() {
 
   const handleSaveFormData = (formData: ChangeOrder) => {
     //update main list
-    COList.push(formData);
-    localStorage.setItem("COList", JSON.stringify(COList));
+    setCOList((prevArray) => [...prevArray, formData]);
+    // localStorage.setItem("COList", JSON.stringify(COList));
 
     //update display list
-    setChangeOrders((prevArray) => [...prevArray]);
+    // setChangeOrders((prevArray) => [...prevArray]);
+
   };
 
   //delete will pass through the CHG (which is a unique identifier) of the object that is to be deleted,
@@ -95,19 +95,18 @@ export default function Home() {
 
   const handleDeleteFormData = (CHG: string) => {
     //update main list//
-
-    let newArray = COList.filter((obj) => {
-      return obj.chg !== CHG;
-    });
-
-    //update display list//
-    setChangeOrders((prevArray) => {
+    setCOList((prevArray) => {
       return prevArray.filter((obj) => {
         return obj.chg !== CHG;
       });
     });
-    COList = newArray;
-    localStorage.setItem("COList", JSON.stringify(COList));
+
+    //update display list//
+    // setChangeOrders(COList);
+
+    //update local storage//
+    //localStorage.setItem("COList", JSON.stringify(COList));
+
   };
 
   const getCHGObject = (CHG: string): ChangeOrder => {
@@ -126,19 +125,19 @@ export default function Home() {
       }
       return co;
     });
-    COList = newList;
-    localStorage.setItem("COList", JSON.stringify(COList));
+    setCOList(newList);
+    // localStorage.setItem("COList", JSON.stringify(COList));
     //i dont really like doing it like this where I am sorting it tiwce, maybe figure out a better implementation down the line...
 
     //update display list//
-    setChangeOrders((prevArray) => {
-      return prevArray.map((co) => {
-        if (co.chg === formData.chg) {
-          co = formData;
-        }
-        return co;
-      });
-    });
+    // setChangeOrders((prevArray) => {
+    //   return prevArray.map((co) => {
+    //     if (co.chg === formData.chg) {
+    //       co = formData;
+    //     }
+    //     return co;
+    //   });
+    // });
   };
 
   const changeStatus = (CHG: string, direction: string) => {
@@ -162,50 +161,32 @@ export default function Home() {
             ],
     };
 
-    COList =
-      index === -1
-        ? COList
-        : [
-            ...COList.slice(0, index),
-            updatedChangeOrder,
-            ...COList.slice(index + 1),
-          ];
+    // COList =
+    //   index === -1
+    //     ? COList
+    //     : [
+    //         ...COList.slice(0, index),
+    //         updatedChangeOrder,
+    //         ...COList.slice(index + 1),
+    //       ];
+
+    setCOList(
+    index === -1
+      ? COList
+      : [
+          ...COList.slice(0, index),
+          updatedChangeOrder,
+          ...COList.slice(index + 1),
+        ]);
+
           
-    localStorage.setItem("COList", JSON.stringify(COList));
+    //localStorage.setItem("COList", JSON.stringify(COList));
 
     
     //update currently displayed list//
-    setChangeOrders((prevChangeOrders) => {
-      const index = prevChangeOrders.findIndex(
-        (changeOrder) => changeOrder.chg === CHG
-      );
-      if (index === -1) return prevChangeOrders;
-
-      const updatedChangeOrder = {
-        ...prevChangeOrders[index],
-        status:
-          direction === "prev"
-            ? statusOptions[
-                (statusOptions.indexOf(prevChangeOrders[index].status) -
-                  1 +
-                  statusOptions.length) %
-                  statusOptions.length
-              ]
-            : statusOptions[
-                (statusOptions.indexOf(prevChangeOrders[index].status) + 1) %
-                  statusOptions.length
-              ],
-      };
-
-      return [
-        ...prevChangeOrders.slice(0, index),
-        updatedChangeOrder,
-        ...prevChangeOrders.slice(index + 1),
-      ];
-    });
   };
 
-  /* not using this method */
+  /* not using this function */
   const changeMESProvided = (CHG: string) => {
     setChangeOrders((prevArray) => {
       return prevArray.map((co) => {
@@ -262,13 +243,14 @@ export default function Home() {
     applyDisplayFilter();
   }, [displayState]);
 
+  //default load data if localstorage exists
   useEffect(() => {
 
     const storedData = localStorage.getItem("COList");
+    
 
-    if (storedData) {
-      COList = (JSON.parse(storedData));
-      console.log(storedData)
+    if (storedData && JSON.parse(storedData).length > 0) {
+      setCOList(JSON.parse(storedData));
       setChangeOrders(COList);
     } else {
       localStorage.setItem("COList", JSON.stringify(COList));
@@ -277,10 +259,16 @@ export default function Home() {
     
   }, []);
 
-
+/* 
+  proposed use of this useEffect:
+    - make 'COList' into a varaible whose state can be tracked when changed
+    - this useEffect will be dependant on 'COList'
+    - whenever COList updates, instead of updating the currently display list at that moment, just run the applyDisplayFilter();
+ function, which will display the list with the proper items at that moment. */
   useEffect(() => {
     setChangeOrders(COList);
-    console.log(COList);
+    applyDisplayFilter();
+    localStorage.setItem("COList", JSON.stringify(COList));
   }, [COList]) 
 
 

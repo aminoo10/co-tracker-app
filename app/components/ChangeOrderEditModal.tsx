@@ -68,9 +68,6 @@ export default function ChangeOrderEditModal({
     // console.log(checkboxElement.value);
   }, [modalOpen, editChg]);
 
-  // useEffect(() => {
-  //   console.log(typeof editChg?.start);
-  // }, [editChg])
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -86,18 +83,27 @@ export default function ChangeOrderEditModal({
     } else if (type === "datetime-local") newValue = new Date(value);
     else if (type === "textarea") newValue = value;
 
-    setCoData((prevCoData) => ({
-      ...(prevCoData as ChangeOrder),
-      [name]: newValue,
-    }));
+    if (value === 'PAT') {
+      setCoData((prevCoData) => ({
+        ...(prevCoData as ChangeOrder),
+        [name]: newValue,
+        risk: 'Low',
+      }));  
+    } else {
+      setCoData((prevCoData) => ({
+        ...(prevCoData as ChangeOrder),
+        [name]: newValue,
+      }));
+    }
+
   };
 
   const handleEdit = () => {
     if (
       !coData?.start ||
-      isNaN(coData?.start.getTime()) ||
+      isNaN(new Date(coData?.start).getTime()) ||
       !coData?.end ||
-      isNaN(coData?.end.getTime())
+      isNaN(new Date(coData?.end).getTime())
     ) {
       editModal.current?.classList.add("animate-quake");
       setSubmissionSuccess(false);

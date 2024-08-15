@@ -55,7 +55,7 @@ export default function ChangeOrderModal({
       malcode: "",
       environment: "PROD",
       risk: "Low",
-      description: " ",
+      description: "",
       mesProvided: false,
       start: FORMATTED_DATE(),
       end: FORMATTED_DATE(),
@@ -77,10 +77,18 @@ export default function ChangeOrderModal({
       newValue = new Date(value);
     }
 
-    setCoData((prevCoData) => ({
-      ...prevCoData,
-      [name]: newValue,
-    }));
+    if (value === 'PAT') {
+      setCoData((prevCoData) => ({
+        ...(prevCoData as ChangeOrder),
+        [name]: newValue,
+        risk: 'Low',
+      }));  
+    } else {
+      setCoData((prevCoData) => ({
+        ...(prevCoData as ChangeOrder),
+        [name]: newValue,
+      }));
+    }
   };
 
   const handleSave = () => {
