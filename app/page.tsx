@@ -257,11 +257,9 @@ export default function Home() {
       localStorage.setItem("COList", JSON.stringify(COList));
     }
 
-    useEffect(() => {
-      if (typeof document !== "undefined") {
-        setDocEnv(true);
-      }
-    })
+    if (typeof document !== "undefined") {
+      setDocEnv(true);
+    }
 
     
   }, []);
