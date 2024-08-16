@@ -4,7 +4,7 @@ import {
   OVERLAY_STYLE,
   OPEN_MODAL,
   CLOSE_MODAL,
-} from "../constants";
+} from "../lib/constants";
 
 interface ChangeOrderDeleteModalProps {
   modalOpen: boolean;

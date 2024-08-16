@@ -10,7 +10,7 @@ import {
   CLOSE_MODAL,
   FORMATTED_DATE,
   DATE_TO_FORMATTED_STRING,
-} from "../constants";
+} from "../lib/constants";
 
 interface ChangeOrderModalProps {
   checkUnique: (CHG: string) => boolean;
@@ -23,9 +23,9 @@ export default function ChangeOrderModal({
 }: ChangeOrderModalProps) {
   const modal = useRef<HTMLDivElement>(null);
 
-  const chgElement = document.getElementById("chg") as HTMLInputElement;
-  const startTime = document.getElementById("start") as HTMLSelectElement;
-  const endTime = document.getElementById("end") as HTMLSelectElement;
+  const chgElement = document?.getElementById("chg") as HTMLInputElement;
+  const startTime = document?.getElementById("start") as HTMLSelectElement;
+  const endTime = document?.getElementById("end") as HTMLSelectElement;
 
   const [modalOpen, setModalOpen] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(true);

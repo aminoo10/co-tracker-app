@@ -9,7 +9,7 @@ import {
   OPEN_MODAL,
   CLOSE_MODAL,
   DATE_TO_FORMATTED_STRING,
-} from "../constants";
+} from "../lib/constants";
 
 interface ChangeOrderEditModalProps {
   modalOpen: boolean;
@@ -26,8 +26,8 @@ export default function ChangeOrderEditModal({
 }: ChangeOrderEditModalProps) {
   const editModal = useRef<HTMLDivElement>(null);
 
-  const startTime = document.getElementById("start-edit") as HTMLSelectElement;
-  const endTime = document.getElementById("end-edit") as HTMLSelectElement;
+  const startTime = document?.getElementById("start-edit") as HTMLSelectElement;
+  const endTime = document?.getElementById("end-edit") as HTMLSelectElement;
 
   const [modalState, setModalState] = useState(modalOpen);
   const [submissionSuccess, setSubmissionSuccess] = useState(true);

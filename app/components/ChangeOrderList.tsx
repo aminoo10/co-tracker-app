@@ -10,7 +10,7 @@ import {
   DATE_DIFFERENCE,
   DETERMINE_CO_BG,
   TRANSLATE_BUTTON_NAME_TO_PROPERTY,
-} from "../constants";
+} from "../lib/constants";
 
 interface COListProps {
   COList: ChangeOrder[];
