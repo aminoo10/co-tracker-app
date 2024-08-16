@@ -48,6 +48,7 @@ const statusOptions: string[] = [
 export default function Home() {
   //the big list (always keep this around)
 
+  const [docEnv, setDocEnv] = useState(false);
   const [COList, setCOList] = useState<ChangeOrder[]>([]);
   const [changeOrders, setChangeOrders] = useState<ChangeOrder[]>(COList);
   const [sortState, setSortState] = useState<SortObject>(
@@ -255,6 +256,12 @@ export default function Home() {
     } else {
       localStorage.setItem("COList", JSON.stringify(COList));
     }
+
+    useEffect(() => {
+      if (typeof document !== "undefined") {
+        setDocEnv(true);
+      }
+    })
 
     
   }, []);
