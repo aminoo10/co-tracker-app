@@ -1,4 +1,5 @@
 import { ChangeOrder } from "../ChangeOrder";
+import dynamic from 'next/dynamic'
 import ChangeOrderDeleteModal from "./ChangeOrderDeleteModal";
 import { SortObject } from "../SortObject";
 import ChangeOrderEditModal from "./ChangeOrderEditModal";
@@ -22,6 +23,12 @@ interface COListProps {
   sortList: (COs: ChangeOrder[], sort: keyof ChangeOrder) => void;
   sortState: SortObject;
 }
+
+const DynamicCOModalEdit = dynamic(() => import("./ChangeOrderEditModal"), {
+  ssr: false,
+});
+
+
 
 const listColumns = [
   "MAL Code",

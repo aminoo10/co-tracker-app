@@ -1,4 +1,5 @@
 "use client";
+import dynamic from 'next/dynamic'
 import ChangeOrderList from "./components/ChangeOrderList";
 import ChangeOrderModal from "./components/ChangeOrderModal";
 import { ChangeOrder } from "./ChangeOrder";
@@ -17,6 +18,10 @@ const statusOptions: string[] = [
   "Implementation Failed",
   "Canceled",
 ];
+
+const DynamicCOModal = dynamic(() => import("./components/ChangeOrderModal"), {
+  ssr: false,
+});
 
 // const testInstance: ChangeOrder = {
 //   malcode: "FUCK",
@@ -48,7 +53,6 @@ const statusOptions: string[] = [
 export default function Home() {
   //the big list (always keep this around)
 
-  const [docEnv, setDocEnv] = useState(false);
   const [COList, setCOList] = useState<ChangeOrder[]>([]);
   const [changeOrders, setChangeOrders] = useState<ChangeOrder[]>(COList);
   const [sortState, setSortState] = useState<SortObject>(
@@ -255,10 +259,6 @@ export default function Home() {
       setChangeOrders(COList);
     } else {
       localStorage.setItem("COList", JSON.stringify(COList));
-    }
-
-    if (typeof document !== "undefined") {
-      setDocEnv(true);
     }
 
     
