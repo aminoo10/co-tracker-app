@@ -140,7 +140,7 @@ export default function ChangeOrderList({
       >
         {listColumns.map((column) => {
           return (
-            <button onClick={sortBy} className="relative">
+            <button key={column} onClick={sortBy} className="relative">
               <p>{column}</p>
               {sortState.sortType ===
                 TRANSLATE_BUTTON_NAME_TO_PROPERTY(column) &&
@@ -192,7 +192,7 @@ export default function ChangeOrderList({
         </div>}
         {COList.map((changeOrder) => {
           return (
-            <div
+            <div key={changeOrder.chg}
               className={`${DETERMINE_CO_BG(
                 changeOrder.status
               )} m-5 ${changeOrderStyle}`}
