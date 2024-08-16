@@ -2,7 +2,6 @@ import { ChangeOrder } from "../ChangeOrder";
 import dynamic from 'next/dynamic'
 import ChangeOrderDeleteModal from "./ChangeOrderDeleteModal";
 import { SortObject } from "../SortObject";
-import ChangeOrderEditModal from "./ChangeOrderEditModal";
 import React, { useState, useEffect } from "react";
 import {
   GET_STATE_NAMES,
@@ -24,7 +23,7 @@ interface COListProps {
   sortState: SortObject;
 }
 
-const DynamicCOModalEdit = dynamic(() => import("./ChangeOrderEditModal"), {
+const DynamicCOEditModal = dynamic(() => import("./ChangeOrderEditModal"), {
   ssr: false,
 });
 
@@ -135,7 +134,7 @@ export default function ChangeOrderList({
         onConfirm={confirmDelete}
         deleteChg={selectedChg}
       />
-      <ChangeOrderEditModal
+      <DynamicCOEditModal
         modalOpen={editModalState}
         close={closeEditModal}
         editChg={chgToEdit}

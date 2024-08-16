@@ -1,7 +1,6 @@
 "use client";
 import dynamic from 'next/dynamic'
 import ChangeOrderList from "./components/ChangeOrderList";
-import ChangeOrderModal from "./components/ChangeOrderModal";
 import { ChangeOrder } from "./ChangeOrder";
 import { SortObject } from "./SortObject";
 import React, { useState, useEffect } from "react";
@@ -280,7 +279,7 @@ export default function Home() {
 
   return (
     <div id="app">
-      <ChangeOrderModal
+      <DynamicCOModal
         onSave={handleSaveFormData}
         checkUnique={checkForUniqueCHG}
       />
