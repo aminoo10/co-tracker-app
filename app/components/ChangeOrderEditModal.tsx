@@ -26,8 +26,16 @@ export default function ChangeOrderEditModal({
 }: ChangeOrderEditModalProps) {
   const editModal = useRef<HTMLDivElement>(null);
 
-  const startTime = document?.getElementById("start-edit") as HTMLSelectElement;
-  const endTime = document?.getElementById("end-edit") as HTMLSelectElement;
+  let startTime = document.getElementById("start-edit") as HTMLSelectElement;
+  let endTime = document.getElementById("end-edit") as HTMLSelectElement;
+  
+  useEffect(() => {
+    
+    startTime = document.getElementById("start-edit") as HTMLSelectElement;
+    endTime = document.getElementById("end-edit") as HTMLSelectElement;
+
+  }, []);
+
 
   const [modalState, setModalState] = useState(modalOpen);
   const [submissionSuccess, setSubmissionSuccess] = useState(true);

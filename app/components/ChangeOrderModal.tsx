@@ -23,9 +23,18 @@ export default function ChangeOrderModal({
 }: ChangeOrderModalProps) {
   const modal = useRef<HTMLDivElement>(null);
 
-  const chgElement = document?.getElementById("chg") as HTMLInputElement;
-  const startTime = document?.getElementById("start") as HTMLSelectElement;
-  const endTime = document?.getElementById("end") as HTMLSelectElement;
+
+  let chgElement = document.getElementById("chg") as HTMLInputElement;
+  let startTime = document.getElementById("start") as HTMLSelectElement;
+  let endTime = document.getElementById("end") as HTMLSelectElement;
+
+  useEffect(() => {
+
+    chgElement = document.getElementById("chg") as HTMLInputElement;
+    startTime = document.getElementById("start") as HTMLSelectElement;
+    endTime = document.getElementById("end") as HTMLSelectElement;
+    
+  }, []);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(true);
@@ -156,7 +165,6 @@ export default function ChangeOrderModal({
     CLOSE_MODAL(modal, modalOpen, setModalOpen);
   };
 
-  useEffect(() => {}, []);
 
   return (
     <div>
